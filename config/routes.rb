@@ -8,6 +8,6 @@ Rails.application.routes.draw do
  
  
  get '/', to: 'posts#showAll', as: 'posts_showAll'
- 
+ get '/front', to: 'users#loginOrSignUp', as: 'users_registration'
 
 end

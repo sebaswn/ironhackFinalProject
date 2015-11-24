@@ -14,11 +14,13 @@
 
 10.times do |i|
 	User.create(email: Faker::Internet.email, 
-					password: "password")
+					password: "password",
+					username: Faker::Internet.user_name)
 	puts("count: #{i}")
 end
 User.create(email: "sebas@fishtank.h20",
-	password: "password")
+	password: "password", 
+	username: "sebas")
 	puts("Created Admin User")
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")

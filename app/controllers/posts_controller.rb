@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!
+
   before_filter do 
-    redirect_to :new_user_session_path unless current_user
+    redirect_to :users_registration unless current_user
   end
 
   # GET /posts
