@@ -1,5 +1,6 @@
 <%= render "layouts/navbar" %>
 
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -22,5 +23,5 @@
   <%= @post.picture %>
 </p>
 
-<%= link_to 'Edit', edit_post_path(user_id: current_user.id, id: @post.id) %> |
-<%= link_to 'Back', posts_showAll_path(user_id: current_user.id) %>
+<%= link_to 'Edit', edit_post_path(id: @post.id) %> |
+<%= link_to 'Back', posts_showAll_path %>
