@@ -47,4 +47,4 @@ end
 
 gem 'devise'
 gem 'faker'
-
+gem 'rails_12factor'
