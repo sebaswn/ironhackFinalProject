@@ -1,0 +1,26 @@
+<%= render "layouts/navbar" %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @post.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @post.description %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @post.location %>
+</p>
+
+<p>
+  <strong>Picture:</strong>
+  <%= @post.picture %>
+</p>
+
+<%= link_to 'Edit', edit_post_path(user_id: current_user.id, id: @post.id) %> |
+<%= link_to 'Back', posts_showAll_path(user_id: current_user.id) %>
