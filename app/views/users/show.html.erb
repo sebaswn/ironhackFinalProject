@@ -3,6 +3,8 @@ Hello, <%=@user[0].email%>
 
 <h1> <%=@user[0].username%>'s Posts</h1>
 
+<%= image_tag @user[0].avatar.url(:thumb) %>
+
 <table>
   <thead>
     <tr>
@@ -22,7 +24,7 @@ Hello, <%=@user[0].email%>
         <td><%= post.name %></td>
         <td><%= post.description %></td>
         <td><%= post.location %></td>
-        <td><%= post.picture %></td>
+        <td><%= image_tag post.image.url(:thumb) %></td>
         <td><%= post.user_id %></td>
         <td><%= link_to 'Show', post_path(post.id) %></td>
         <%- if current_user.id === post.user_id %>

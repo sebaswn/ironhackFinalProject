@@ -1,11 +1,5 @@
 <%= render "layouts/navbar" %>
 
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Posts</h1>
-<br>
-<br>
-
 <%= link_to 'New Post', new_post_path(current_user) %>
 <br>
 <br>
@@ -29,7 +23,7 @@
         <td><%= post.name %></td>
         <td><%= post.description %></td>
         <td><%= post.location %></td>
-        <td><%= post.picture %></td>
+        <td><%= image_tag post.image.url(:thumb) %></td>
         <td><a href="/users/<%= post.user_id %>"><%= post.user_id %></a></td>
         <td><%= link_to 'Show', post_path(post.id) %></td>
         <%- if current_user.id === post.user_id %>
@@ -42,6 +36,4 @@
 </table>
 
 
-
 <br>
-

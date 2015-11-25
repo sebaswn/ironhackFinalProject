@@ -3,6 +3,9 @@
 
 <p id="notice"><%= notice %></p>
 
+<%= image_tag @post.image.url(:large) %>
+
+
 <p>
   <strong>Name:</strong>
   <%= @post.name %>
@@ -18,10 +21,7 @@
   <%= @post.location %>
 </p>
 
-<p>
-  <strong>Picture:</strong>
-  <%= @post.picture %>
-</p>
+
 
 <%= link_to 'Edit', edit_post_path(id: @post.id) %> |
 <%= link_to 'Back', posts_showAll_path %>
