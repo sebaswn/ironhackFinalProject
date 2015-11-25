@@ -32,7 +32,12 @@ images= ["http://animalia-life.com/data_images/dog/dog1.jpg", "http://weknowyour
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
 					description: Faker::Lorem.sentence, 
-					user_id: rand(User.first.id..User.last.id))
+					user_id: rand(User.first.id..User.last.id)
+					image: Image.create({
+					  :id => i, 
+					  :asset => File.new("#{Rails.root}/path/to/somefile.jpg"),
+					  :product_id => 52'
+					}))
 	puts("count: #{i}")
 end
 	puts("----------------------------------------------------------------")
