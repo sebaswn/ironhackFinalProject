@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
 
-	before_filter :except => [:users_registration] do 
+	before_filter do 
     	redirect_to :users_registration unless current_user
   	end 
 
