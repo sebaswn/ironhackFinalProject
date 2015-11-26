@@ -1,28 +1,57 @@
 <%= render "layouts/navbar" %>
+<button class="toggleModal">Toggle</button>
+<div class="container-fluid"
+	<div class="row">
+		<div class="col-md-3">
+	
+			<p>
+			  <strong>Name:</strong>
+			  <%= @post.name %>
+			</p>
+
+			<p>
+			  <strong>Description:</strong>
+			  <%= @post.description %>
+			</p>
+
+			<p>
+			  <strong>Location:</strong>
+			  <%= @post.location %>
+			</p>
+
+
+		</div>
+		<div class="col-md-6 pictureView">
+			
+			<%= image_tag @post.image.url %>	
+
+
+		</div>
+	</div>
+</div>
 
 
 
 <p id="notice"><%= notice %></p>
-<%= image_tag @post.image.url %>
 
 
-
-<p>
-  <strong>Name:</strong>
-  <%= @post.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @post.description %>
-</p>
-
-<p>
-  <strong>Location:</strong>
-  <%= @post.location %>
-</p>
-
-
-
-<%= link_to 'Edit', edit_post_path(id: @post.id) %> |
+<% if current_user.id == @post.user_id %>
+	<%= link_to 'Edit', edit_post_path(id: @post.id) %> |
+<% end %>
 <%= link_to 'Back', posts_showAll_path %>
+
+
+
+</script>
+
+
+<style>
+	.pictureView
+		{
+		    height: 100%;
+		 
+		}
+		img{
+			height: 100%;
+		}
+</style>

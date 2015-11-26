@@ -1,17 +1,6 @@
 <%= render "layouts/navbar" %>
-
-
-<%= link_to 'New Post', new_post_path(current_user) %>
-<br>
-<br>
-<br>
-
-
-
   <div id="myContent"> 
-
   <% @posts.each do |post| %> 
-
     <div data-id="<%=post.id%>" class="active">
       <img data-id="<%=post.id%>" data-usr="<%=post.user_id%>" src="<%=post.image.url(:original) %>">
       
@@ -24,24 +13,37 @@
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
           <% end %>
-            <a class="linkOptions" href="/posts/<%=post.id%>">Show</a>
+            <a class="linkOptions showPic" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
           <% end %>
         </div>
-      
-
-
-
     </div>
   <% end %>
   </div> 
-
-
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog modal-xl inverse" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Title</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-8 pictureView">
+                        Goodbye
+                      </div>
+                      <div class="col-md-3">
+                        Hello
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
 <br>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
 
 <script>
 
@@ -51,6 +53,26 @@
   $(".linkOptions").css("color", "white");
   $(".linkToUser").css("color", "white");
 
+
+
+$(".showPic").click(function(){
+  event.preventDefault();
+  var post_id = $(this).data("post");
+  console.log(post_id);
+  $.ajax({
+    url: "http://localhost:3000/getPostInfo/"+post_id+"",
+    success: function(data) {
+      $(".modal-title").empty();
+      $(".modal-title").append(""+data.name+"");
+      $(".pictureView").empty();
+      $(".pictureView").append("<img class='imageShow' src='/images/original/"+data.image_file_name+"'>");
+    },
+    error: function(){
+      console.log("this is not working")
+    }
+  })
+  $(".active").children('#myModal').focus();
+});
 
 $(".active").mouseover(function(){
   console.log("hello");
@@ -83,11 +105,31 @@ $(".active").mouseout(function(){
 
 <style>
 
+.modal-xl {
+  width: 90%;
+   max-width:1200px;
+   font-family: 'Slabo 27px', serif;
+  }
+
+.pictureView{
+
+  padding-bottom: 10px;
+}
+.imageShow{
+  width: 100%;
+}
+
+.modal-title{
+  text-align: center;
+}
+
+
 .linkOptions{
   color: white;
   padding-left: 7px;
 
 }
+
 .seeMore{
     width: 60px;
     background-color: rgba(92,184,92,0.5);

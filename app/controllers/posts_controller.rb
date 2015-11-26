@@ -5,6 +5,13 @@ class PostsController < ApplicationController
     redirect_to :users_registration unless current_user
   end
 
+  def getPostInfo
+    chosenPost = Post.find(params[:id])
+    render json: chosenPost
+
+  end
+
+
   # GET /posts
   # GET /posts.json
   def index
