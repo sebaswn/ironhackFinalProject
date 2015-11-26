@@ -14,16 +14,22 @@
 
     <div data-id="<%=post.id%>" class="active">
       <img data-id="<%=post.id%>" data-usr="<%=post.user_id%>" src="<%=post.image.url(:original) %>">
-      <div class="title"><h3><%=post.name%></h3></div>
-      <div class="photographer"><h6>by:</h6><h4><%=User.where(id: post.user_id)[0].username%></h4></div>
-      <div class="buttons">
-        <a href="/posts/<%=post.id%>"><button class="btn btn-success seeMore">Show</button></a><br>
-        <% if current_user.id === post.user_id %>
-         <a href="/posts/<%=post.id%>/edit"><button class="btn btn-warning edit">Edit</button></a><br>
-         <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/2"><button class="btn btn-danger delete">Delete</button></a>
-        <% end %>
-      </div>
-
+      
+        <div class="title"><h3><%=post.name%></h3></div>
+        <div class="photographer">
+          <h6>by:</h6>
+          <a class="linkToUser" href="/users/<%=post.user_id%>"><h4><%=User.where(id: post.user_id)[0].username%></h4><a>
+        </div>
+        <div class="links">
+          <% if current_user.id === post.user_id %>
+             <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
+          <% end %>
+            <a class="linkOptions" href="/posts/<%=post.id%>">Show</a>
+          <% if current_user.id === post.user_id %>
+             <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
+          <% end %>
+        </div>
+      
 
 
 
@@ -41,25 +47,35 @@
 
   $(".title").hide();
   $(".photographer").hide();
-  $(".buttons").hide();
+  $(".links").hide();
+  $(".linkOptions").css("color", "white");
+  $(".linkToUser").css("color", "white");
 
-
-$("div > div", "#tab");
 
 $(".active").mouseover(function(){
   console.log("hello");
   $(this).children(".title").show();
   $(this).children(".photographer").show();
-  $(this).children(".buttons").show();
+  $(this).children(".links").show();
   $(this).children('img').css("opacity","0.5");
   $(this).children('img').css("filter","alpha(opacity=50)");
-})
+});
+
+$(".linkOptions").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+$(".linkToUser").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
 
 $(".active").mouseout(function(){
   $(this).children('img').css("opacity","1");
   $(".title").hide();
   $(".photographer").hide();
-  $(".buttons").hide();
+  $(".links").hide();
   $(this).children('img').css("filter","alpha(opacity=100)");
 });
 
@@ -67,6 +83,11 @@ $(".active").mouseout(function(){
 
 <style>
 
+.linkOptions{
+  color: white;
+  padding-left: 7px;
+
+}
 .seeMore{
     width: 60px;
     background-color: rgba(92,184,92,0.5);
@@ -88,13 +109,23 @@ $(".active").mouseout(function(){
     position:relative; 
   
 }
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+ h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
 .title {
     position: absolute; 
     width: 100%;
     text-align: center;
     height: 0px; 
     right: 0; 
-    top: 23%; 
+    top: 15%; 
     bottom: 0; 
     background: red; 
     color:white;
@@ -106,24 +137,25 @@ $(".active").mouseout(function(){
     text-align: center;
     height: 0px; 
     right: 0; 
-    top: 45%; 
+    top: 35%; 
     bottom: 0; 
     background: red; 
     color:white;
     font-family: 'Slabo 27px', serif;
 }
-.buttons {
+.links {
     position: absolute; 
     width: 100%;
     text-align: center;
     height: 0px; 
-    right: 130px; 
-    top: 29%; 
+    right: 0; 
+    top: 70%; 
     bottom: 0; 
     background: red; 
-    color:white;
+    color: white;
     font-family: 'Slabo 27px', serif;
 }
+
 
 #container {
   width: 1200px;
