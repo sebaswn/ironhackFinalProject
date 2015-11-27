@@ -6,7 +6,6 @@ class CreateContests < ActiveRecord::Migration
       t.datetime :uploadBy
       t.datetime :voteBy
       t.datetime :endBy
-
       t.timestamps null: false
     end
   end

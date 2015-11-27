@@ -83,7 +83,6 @@ $(".active").mouseover(function(){
   $(this).children('img').css("filter","alpha(opacity=50)");
 });
 
-
 $(".linkOptions").hover(function(){
   $(this).css("background-color", "transparent");
   $(this).css("color", "white");
@@ -101,6 +100,8 @@ $(".active").mouseout(function(){
   $(".links").hide();
   $(this).children('img').css("filter","alpha(opacity=100)");
 });
+
+
 
 </script>
 
@@ -208,14 +209,39 @@ h3 {
   padding-left: 0px;
 }
 
-#myContent {
-  -moz-column-count: 6;
-  -moz-column-gap: 0px;
-  -webkit-column-count: 4;
-  -webkit-column-gap: 0px;
-  column-count: 6;
-  column-gap: 0px;
-  width: 100%;
+@media (max-width: 600px) {
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 100%;
+  }
+}
+@media (min-width: 600px) and (max-width: 900px){
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 900px) {
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 100%;
+  }
 }
 
 #myContent img{

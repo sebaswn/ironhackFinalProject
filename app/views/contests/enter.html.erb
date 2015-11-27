@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>String:</strong>
+  <%= @contest[0].name %>
+</p>
+
+<p>
+  <strong>String:</strong>
+  <%= @contest[0].description %>
+</p>
+
+<p>
+  <strong>Datetime:</strong>
+  <%= @contest[0].uploadBy %>
+</p>
+
+<p>
+  <strong>Datetime:</strong>
+  <%= @contest[0].voteBy %>
+</p>
+
+<p>
+  <strong>Datetime:</strong>
+  <%= @contest[0].endBy %>
+</p>
+
+<p>
+	<% current_user.posts.each do |post| %>
+		<a href='/contest/<%=@contest[0].id%>/enter/<%=post.id%>'><img src="<%=post.image.url(:medium) %>"></a>
+	<%end%>
+</p>
+
+
+<%= link_to 'Edit', edit_contest_path(@contest) %> |
+<%= link_to 'Back', contests_path %>
+
+
+<script>
+
+
+</script>

@@ -5,11 +5,12 @@
 <table>
   <thead>
     <tr>
-      <th>String</th>
-      <th>String</th>
-      <th>Datetime</th>
-      <th>Datetime</th>
-      <th>Datetime</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Start</th>
+      <th>Close</th>
+      <th>End</th>
+      <th>Posts</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,12 +18,14 @@
   <tbody>
     <% @contests.each do |contest| %>
       <tr>
-        <td><%= contest.string %></td>
-        <td><%= contest.string %></td>
-        <td><%= contest.datetime %></td>
-        <td><%= contest.datetime %></td>
-        <td><%= contest.datetime %></td>
+        <td><%= contest.name %></td>
+        <td><%= contest.description %></td>
+        <td><%= contest.uploadBy %></td>
+        <td><%= contest.voteBy %></td>
+        <td><%= contest.endBy %></td>
+        <td><%= contest.posts.size %></td>
         <td><%= link_to 'Show', contest %></td>
+        <td><%= link_to 'Enter', contest_enter_path(contest) %></td>
         <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
         <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
