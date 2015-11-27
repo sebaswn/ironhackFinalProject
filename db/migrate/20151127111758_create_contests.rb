@@ -3,9 +3,9 @@ class CreateContests < ActiveRecord::Migration
     create_table :contests do |t|
       t.string :name
       t.string :description
-      t.datetime :uploadBy
-      t.datetime :voteBy
-      t.datetime :endBy
+      t.date :uploadBy
+      t.date :voteBy
+      t.date :endBy
       t.timestamps null: false
     end
   end

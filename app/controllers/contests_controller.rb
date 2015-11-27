@@ -9,6 +9,7 @@ class ContestsController < ApplicationController
   # GET /contests.json
 
   def enter
+    @userEntered = false
     contest_id = params[:id]
     @contest = Contest.where(id: contest_id)
   end
@@ -17,6 +18,7 @@ class ContestsController < ApplicationController
     contest_id = params[:id]
     post_id = params[:post_id]
     Contest.where(id: contest_id)[0].posts<<(Post.where(id: post_id)[0])
+    Contest.where(id: contest_id)[0].users<<(current_user)
     redirect_to :contests
   end
 

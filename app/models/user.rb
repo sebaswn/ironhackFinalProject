@@ -3,6 +3,7 @@
   # :confirmable, :lockable, :timeoutable and :omniauthable
   has_many :posts, dependent: :destroy
   accepts_nested_attributes_for :posts
+  has_and_belongs_to_many :contests
 
 
   

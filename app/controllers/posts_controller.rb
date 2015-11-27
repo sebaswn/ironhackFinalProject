@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     render json: chosenPost
   end
 
-
+ 
   # GET /posts
   # GET /posts.json
   def index
