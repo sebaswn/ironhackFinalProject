@@ -8,7 +8,6 @@ class PostsController < ApplicationController
   def getPostInfo
     chosenPost = Post.find(params[:id])
     render json: chosenPost
-
   end
 
 
@@ -21,8 +20,12 @@ class PostsController < ApplicationController
 
   def showAll
     @posts = Post.all.order(created_at: :desc)
-    
   end
+
+  def showRandom
+    @posts = Post.order("RANDOM()").limit(Post.count)
+  end
+
  
 
   # GET /posts/1
