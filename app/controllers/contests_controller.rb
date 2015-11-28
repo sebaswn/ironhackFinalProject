@@ -22,6 +22,18 @@ class ContestsController < ApplicationController
     redirect_to :contests
   end
 
+  def vote
+    contest_id = params[:id]
+    @contest = Contest.where(id: contest_id)
+  end
+
+  def findVotePosts
+     contest = Contest.where(id: params[:id])
+     posts = contest[0].posts.order("RANDOM()").limit(Post.count)
+     render json: posts
+  end
+
+
   def index
     @contests = Contest.all
   end

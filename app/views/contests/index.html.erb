@@ -93,9 +93,7 @@
             <%end%>
           <%end%>
 
-          <% if @userEntered == false || contest.users.size == 0 %>
-            <td><%= link_to 'Vote', contest_enter_path(contest) %></td>
-          <%end%>
+            <td><%= link_to 'Vote', contest_vote_path(contest) %></td>
 
         <%end%>
 

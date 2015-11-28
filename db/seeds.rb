@@ -10,7 +10,7 @@
 	puts("----------------------------------------------------------------")
 
 
-20.times do |i|
+5.times do |i|
 	User.create(email: Faker::Internet.email, 
 					password: "password",
 					username: Faker::Internet.user_name)
@@ -25,7 +25,7 @@ User.create(email: "sebas@fishtank.h20",
 	puts("----------------------------------------------------------------")
 
 
-2.times do |i|
+42.times do |i|
 	
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
@@ -36,8 +36,10 @@ User.create(email: "sebas@fishtank.h20",
 	
 	puts("Post# #{i}")
 end
+
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
+
 4.times do |i|
 	Contest.create(name: Faker::Team.name,
 					description: Faker::Lorem.sentence,
@@ -76,6 +78,13 @@ Contest.create(name: "Voting Open",
 					voteBy: Date.new(2015, 11, 27),
 					endBy: Date.new(2015, 12, 30)
 				)
+Post.all.each do |x|
+		post_id = x.id
+		post_to_look_for = Post.where(id: post_id)[0]
+		user_to_look_for = User.where(id: post_to_look_for.user_id)[0]
+		Contest.last.posts<<(Post.where(id: post_id))
+		Contest.last.users<<(user_to_look_for)
+	end
 
 Contest.create(name: "Voting Still Open",
 					description: Faker::Lorem.sentence,
@@ -83,7 +92,19 @@ Contest.create(name: "Voting Still Open",
 					voteBy: Date.new(2015, 11, 27),
 					endBy: Date.new(2015, 12, 30)
 				)
-
+num = 0
+Post.all.each do |x|
+		post_id = x.id
+		post_to_look_for = Post.where(id: post_id)[0]
+		user_to_look_for = User.where(id: post_to_look_for.user_id)[0]
+		Contest.last.posts<<(Post.where(id: post_id))
+		Contest.last.users<<(user_to_look_for)
+		num = num +1
+		if num == 17
+			break
+		end
+		
+	end
 
 
 

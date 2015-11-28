@@ -1,0 +1,22 @@
+<div id="myContent"> 
+  <% @posts.each do |post| %> 
+    <div data-id="<%=post.id%>" class="active">
+      <img data-id="<%=post.id%>" data-usr="<%=post.user_id%>" src="<%=post.image.url(:original) %>">
+      
+        <div class="title"><h3><%=post.name%></h3></div>
+        <div class="photographer">
+          <h6>by:</h6>
+          <a class="linkToUser" href="/users/<%=post.user_id%>"><h4><%=User.where(id: post.user_id)[0].username%></h4><a>
+        </div>
+        <div class="links">
+          <% if current_user.id === post.user_id %>
+             <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
+          <% end %>
+            <a class="linkOptions showPic" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
+          <% if current_user.id === post.user_id %>
+             <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
+          <% end %>
+        </div>
+    </div>
+  <% end %>
+  </div> 

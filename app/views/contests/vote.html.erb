@@ -1,0 +1,329 @@
+
+
+<%= render "layouts/navbar" %>
+<p id="notice"><%= notice %></p>
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog modal-xl inverse" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Title</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-8 pictureView">
+                        Goodbye
+                      </div>
+                      <div class="col-md-3">
+                        Hello
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+           </div>
+
+<p>
+  <strong>Name:</strong>
+  <%= @contest[0].name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @contest[0].description %>
+</p>
+
+<p>
+  <strong>Datetime:</strong>
+  <%= @contest[0].uploadBy %>
+</p>
+
+<p>
+  <strong>Datetime:</strong>
+  <%= @contest[0].voteBy %>
+</p>
+
+<p>
+  <strong>Datetime:</strong>
+  <%= @contest[0].endBy %>
+</p>
+<p>
+	  <button class="next">next</button>
+	<div id="myContent"> 
+    
+  </div> 
+
+	
+</p>
+
+
+<%= link_to 'Edit', edit_contest_path(@contest) %> |
+<%= link_to 'Back', contests_path %>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+<script>
+
+$(document).ready(function() {
+    console.log("ready!");
+    fetchRandom();
+});
+
+function fetchRandom() {
+    $.ajax({
+        url: "/contest/<%=@contest[0].id%>/vote/findposts",
+    }).done(function(data) {
+        i = 0;
+        while (i < 6) {
+            console.log(data[i].image_file_name)
+            $("#myContent").prepend(
+                '<div data-id="+data[i].id+" class="active"><img data-id="' +
+                data[i].id + '" data-usr="' + data[i].user_id +
+                '" src=/images/original/' + data[i].image_file_name +
+                '><div class="title"><h3>' + data[i].name +
+                '</h3></div><div class="links"><a class="linkOptions showPic" data-post="' +
+                data[i].id +
+                '" data-toggle="modal" data-target="#myModal" href="#">Show</a></div></div>'
+            )
+
+            i++;
+		        $(".title").hide();
+						$(".photographer").hide();
+						$(".links").hide();
+        }
+        $(".next").click(function() {
+            $("#myContent").empty()
+            x = i + 6
+            console.log(i)
+            while (i < x) {
+                $("#myContent").prepend(
+                    '<div data-id="+data[i].id+" class="active"><img data-id="' +
+                    data[i].id + '" data-usr="' + data[
+                        i].user_id +
+                    '" src=/images/original/' + data[i]
+                    .image_file_name +
+                    '><div class="title"><h3>' + data[i]
+                    .name +
+                    '</h3></div><div class="links"><a class="linkOptions showPic" data-post="' +
+                    data[i].id +
+                    '" data-toggle="modal" data-target="#myModal" href="#">Show</a></div></div>'
+                )
+                i++;
+                $(".title").hide();
+								$(".photographer").hide();
+								$(".links").hide();
+            }
+        })
+    });
+	}
+
+	$(".title").hide();
+	$(".photographer").hide();
+	$(".links").hide();
+
+	$(".linkOptions").css("color", "white");
+	$(".linkToUser").css("color", "white");
+	$(".showPic").click(function() {
+	    event.preventDefault();
+	    var post_id = $(this).data("post");
+	    console.log(post_id);
+	    $.ajax({
+	        url: "http://localhost:3000/getPostInfo/" + post_id +
+	            "",
+	        success: function(data) {
+	            $(".modal-title").empty();
+	            $(".modal-title").append("" + data.name + "");
+	            $(".pictureView").empty();
+	            $(".pictureView").append(
+	                "<img class='imageShow' src='/images/original/" +
+	                data.image_file_name + "'>");
+	        },
+	        error: function() {
+	            console.log("this is not working")
+	        }
+	    })
+	    $(".active").children('#myModal').focus();
+	});
+	$(".active").mouseover(function() {
+	    console.log("hello");
+	    $(this).children(".title").show();
+	    $(this).children(".photographer").show();
+	    $(this).children(".links").show();
+	    $(this).children('img').css("opacity", "0.5");
+	    $(this).children('img').css("filter", "alpha(opacity=50)");
+	});
+	$(".linkOptions").hover(function() {
+	    $(this).css("background-color", "transparent");
+	    $(this).css("color", "white");
+	});
+	$(".linkToUser").hover(function() {
+	    $(this).css("background-color", "transparent");
+	    $(this).css("color", "white");
+	});
+	$(".active").mouseout(function() {
+	    $(this).children('img').css("opacity", "1");
+	    $(".title").hide();
+	    $(".photographer").hide();
+	    $(".links").hide();
+	    $(this).children('img').css("filter", "alpha(opacity=100)");
+	});
+
+
+</script>
+
+
+<style>
+
+.modal-content{
+  background-color: #EDEDED;
+  color: black;
+}
+.modal-xl {
+  width: 90%;
+   max-width:1200px;
+   font-family: 'Slabo 27px', serif;
+   max-height: 100px;
+   background-color: black;
+  }
+
+.pictureView{
+  text-align: center;
+  padding-bottom: 10px;
+}
+.imageShow{
+  max-width: 100%;
+  max-height: 80vh;
+}
+body{
+  background-color: #EDEDED;
+}
+.modal-title{
+  text-align: center;
+}
+
+
+.linkOptions{
+  color: white;
+  padding-left: 7px;
+
+}
+
+.seeMore{
+    width: 60px;
+    background-color: rgba(92,184,92,0.5);
+    color: white;
+  }
+.edit{
+    width: 60px;
+    background-color: rgba(240, 173, 78, 0.5);
+    color: white;
+  }
+  .delete{
+    width: 60px;
+    background-color: rgba(201, 48, 44, 0.5);
+    color: white;
+  }
+
+.active {
+    background-color: black;
+    position:relative; 
+  
+}
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+ h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.title {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 15%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.photographer {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 35%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.links {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 70%; 
+    bottom: 0; 
+    background: red; 
+    color: white;
+    font-family: 'Slabo 27px', serif;
+}
+
+
+#container {
+  width: 1200px;
+  margin: 0 auto;
+  padding-left: 0px;
+}
+
+@media (max-width: 600px) {
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 100%;
+  }
+}
+@media (min-width: 600px) and (max-width: 900px){
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 900px) {
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 100%;
+  }
+}
+
+#myContent img{
+  display: inline-block;
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+</style>
