@@ -89,8 +89,8 @@ Contest.create(name: "Started Yesterday",
 Contest.create(name: "Voting Open",
 					description: Faker::Lorem.sentence,
 					uploadBy: Date.new(2015, 11, 26),
-					voteBy: Date.new(2015, 11, 27),
-					endBy: Date.new(2015, 11, 30)
+					voteBy: Date.new(2015, 11, 30),
+					endBy: Date.new(2015, 12, 01)
 				)
 Post.all.each do |x|
 		post_id = x.id

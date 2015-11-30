@@ -1,33 +1,14 @@
 
 <%= render "layouts/navbar" %>
 <p id="notice"><%= notice %></p>
-						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog modal-xl inverse" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Title</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-8 pictureView">
-                        Hello
-                      </div>
-                      <div class="col-md-3">
-                        Goodbye
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-           </div>
+						
 <!DOCTYPE html>
 <html>
 <head>
     <title></title>
 </head>
 <body>
+    
     <div class="row">
         <div class="col-md-3">
             <p><strong>Name:</strong> <%= @contest[0].name %></p>
@@ -66,10 +47,14 @@ function fetchRandom() {
         while (i < 5) {
             console.log(data[i].image_file_name)
             $("#myContent").prepend(
-                '<div data-userid="current_user.id" data-contestid="<%=@contest[0].id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
-                data[i].id + '" data-usr="' + data[i].user_id +
-                '" src=/images/original/' + data[i].image_file_name +
-                '><div class="title"><h3>' + data[i].name 
+                '<div data-contestid="<%=@contest[0].id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
+                            data[i].id +
+                            '" data-usr="' +
+                            data[i].user_id +
+                            '" src=/images/original/' +
+                            data[i].image_file_name +
+                            '><div class="title"><h3>' +
+                            data[i].name
             )
             i++;
             $(".title").hide();

@@ -60,6 +60,7 @@ class ContestsController < ApplicationController
   # GET /contests/1
   # GET /contests/1.json
   def show
+    
   end
 
   # GET /contests/new

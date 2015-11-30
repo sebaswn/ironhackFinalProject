@@ -25,11 +25,9 @@
   <strong>Datetime:</strong>
   <%= @contest.endBy %>
 </p>
-<p>
-  <%@contest.posts.each do |post|%>
-    <img src="<%=post.image.url(:thumb) %>">
-  <%end%>
-</p>
+<%= render partial: "layouts/gridLayout", locals: {posts: @contest.posts} %>
+ <%= render "layouts/showModal" %>
+
 
 
 <%= link_to 'Edit', edit_contest_path(@contest) %> |
