@@ -14,7 +14,7 @@
 	puts("----------------------------------------------------------------")
 
 
-200.times do |i|
+10.times do |i|
 	User.create(email: Faker::Internet.email, 
 					password: "password",
 					username: Faker::Internet.user_name)
@@ -29,7 +29,7 @@ User.create(email: "sebas@fishtank.h20",
 	puts("----------------------------------------------------------------")
 
 
-45.times do |i|
+8.times do |i|
 	
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
@@ -40,9 +40,16 @@ User.create(email: "sebas@fishtank.h20",
 	puts("Post# #{i}")
 
 	rand(1..10).times do |y|
-		Like.create(user_id: rand(User.second.id..User.last.id),
+		Like.create(user_id: rand(User.first.id..User.last.id),
 								post_id: Post.last.id)
 		puts("Like# #{y} for Post# #{i}")
+	end
+	rand(0..5).times do |v|
+		Comment.create(user_id: rand(User.first.id..User.last.id),
+						post_id: Post.last.id,
+						content: Faker::Lorem.sentence)
+		puts("comment# #{v} for Post# #{i}")
+
 	end
 		
 end

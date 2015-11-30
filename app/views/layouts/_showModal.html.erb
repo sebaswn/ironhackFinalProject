@@ -10,7 +10,7 @@
                       <div class="col-md-8 pictureView">
                         Goodbye
                       </div>
-                      <div class="col-md-3 infoView">
+                      <div class="col-md-4 infoView">
                         Hello
                     </div>
                   </div>
@@ -18,3 +18,148 @@
                 </div>
               </div>
             </div>
+
+
+
+<script>
+ $(".showPic").click(function() {
+     event.preventDefault();
+     var post_id = $(this).data("post");
+     console.log(post_id);
+     $.ajax({
+         url: "/getPostInfo/" + post_id + "",
+         success: function(data) {
+             $(".modal-title").empty();
+             $(".modal-title").append("<h3>" + data.name +
+                 "</h3>");
+             $(".pictureView").empty();
+             $(".pictureView").append(
+                 "<img data-postid="+data.id+" class='imageShow' src='/images/original/" +
+                 data.image_file_name + "'>");
+             $(".infoView").empty();
+             $.ajax({
+                 url: "/user/" + data.user_id +
+                     "/finduser",
+                 success: function(data) {
+                     $(".infoView").prepend(
+                         "<b><h4>Photographer: </b>" +
+                         data[0].username +
+                         "</h4>");
+                 }
+             });
+             $(".infoView").append(
+                 "<b><h4>Description: </b>" + data.description +
+                 "")
+             $(".infoView").append("<b><h4>Location: </b>" +
+                 data.location + "")
+             $.ajax({
+                 url: "/post/" + data.id + "/likes",
+                 success: function(data) {
+                     $(".infoView").append(
+                         "<b><h4>Likes: </b>" +
+                         data.length +
+                         "</h4>");
+                 }
+             });
+             $.ajax({
+                 url: "/posts/" + data.id +
+                     "/comments",
+                 success: function(data) {
+
+                     $(".infoView").append(
+                         "<div class='comments'> <b><h4>Comments: </b></h4><ul>"
+                     );
+                     for (i = 0; i < data.length; i++) {
+                         $(".comments").append(
+                             "<li>" + data[
+                                 i].content +
+                             "</li>")
+                     }
+                     $(".infoView").append(
+                         "<textarea id='comment' class='comment' rows='3' cols='45px' placeholder='comment' maxlength='140'></textarea>"
+                     )
+                     $(".infoView").append(
+                         "<button data-userid='<%=current_user%>' class='submitComment'>Comment</button>"
+                     )
+                 }
+             });
+         },
+         error: function() {
+             console.log("this is not working")
+         }
+     })
+     $(".active").children('#myModal').focus();
+ });
+ $("body").on("click", ".submitComment", function() {
+     console.log("click")
+      comment = document.getElementById("comment").value;
+      console.log(comment)
+      if (comment != ""){
+        $.ajax({
+          type: "POST",
+          url: "post/comments/create",
+          data: {
+                user_id: $(this).data("userid"),
+                post_id: $('.imageShow').data("postid"),
+                content: comment
+
+          },
+          success: function(){
+            $(".comment").val('');
+            $(".comments").append("<li>"+comment+"</li>");
+          }
+        })
+      }
+
+     
+ })
+
+
+
+
+
+
+
+
+</script>
+
+
+<style>
+textarea{
+  resize: none;
+}
+
+.infoView{
+  height: 550px;
+  overflow: auto;
+ 
+}
+
+.pictureView{
+  border-right: 1px #e5e5e5 solid;
+  border-bottom: 1px #e5e5e5 solid;
+}
+
+.modal-content{
+  background-color: #EDEDED;
+  color: black;
+}
+.modal-xl {
+    width: 90%;
+   max-width:1200px;
+   font-family: 'Slabo 27px', serif;
+   max-height: 100px;
+   background-color: black;
+  }
+
+.pictureView{
+  text-align: center;
+  padding-bottom: 10px;
+}
+.imageShow{
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+
+</style>

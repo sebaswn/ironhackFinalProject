@@ -44,42 +44,6 @@
   $(".linkOptions").css("color", "white");
   $(".linkToUser").css("color", "white");
 
-
-
-$(".showPic").click(function(){
-  event.preventDefault();
-  var post_id = $(this).data("post");
-  console.log(post_id); 
-  $.ajax({
-    url: "/getPostInfo/"+post_id+"",
-    success: function(data) {
-      $(".modal-title").empty();
-      $(".modal-title").append("<h3>"+data.name+"</h3>");
-      $(".pictureView").empty();
-      $(".pictureView").append("<img class='imageShow' src='/images/original/"+data.image_file_name+"'>");
-      $(".infoView").empty();
-      $.ajax({
-        url: "/user/"+data.user_id+"/finduser",
-          success: function(data){
-            $(".infoView").prepend("<b><h4>Photographer: </b>"+data[0].username+"</h4>");
-          }
-        });
-      $(".infoView").append("<b><h4>Description: </b>"+data.description+"")
-      $(".infoView").append("<b><h4>Location: </b>"+data.location+"")
-
-      $.ajax({
-        url: "http://localhost:3000/post/"+data.id+"/likes",
-          success: function(data){
-            $(".infoView").append("<b><h4>Likes: </b>"+data.length+"</h4>");
-          }
-        });
-    },
-    error: function(){
-      console.log("this is not working")
-    }
-  })
-  $(".active").children('#myModal').focus();
-});
 $(".likePic").click(function() {
     event.preventDefault();
     $.ajax({
@@ -129,31 +93,7 @@ $(".active").mouseout(function(){
 
 <style>
 
-.pictureView{
-  border-right: 1px #e5e5e5 solid;
-  border-bottom: 1px #e5e5e5 solid;
-}
 
-.modal-content{
-  background-color: #EDEDED;
-  color: black;
-}
-.modal-xl {
-  width: 90%;
-   max-width:1200px;
-   font-family: 'Slabo 27px', serif;
-   max-height: 100px;
-   background-color: black;
-  }
-
-.pictureView{
-  text-align: center;
-  padding-bottom: 10px;
-}
-.imageShow{
-  max-width: 100%;
-  max-height: 80vh;
-}
 body{
   background-color: #EDEDED;
 }

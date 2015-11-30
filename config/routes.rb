@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
       
+  resources :comments
   resources :contests
   devise_for :users
   
@@ -21,12 +22,13 @@ Rails.application.routes.draw do
 
  get '/posts/show/all' =>'posts#showAll'
  get '/posts/show/random' =>'posts#showRandom'
-  get '/posts/show/popular' =>'posts#showPopular'
+ get '/posts/show/popular' =>'posts#showPopular'
  get 'getPostInfo/:id' => 'posts#getPostInfo'
 
  post '/posts/likes/create', to: 'likes#create'
  get '/post/:id/likes', to: 'likes#findLikes'
 
-
+ get '/posts/:id/comments', to: 'comments#findComments'
+ post 'post/comments/create', to: 'comments#createComment'
  
 end

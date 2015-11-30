@@ -8,5 +8,4 @@ class LikesController < ApplicationController
 		likes = Like.where(post_id: params[:id])
 		render json: likes
 	end
-
 end
