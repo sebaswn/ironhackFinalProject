@@ -29,7 +29,7 @@ User.create(email: "sebas@fishtank.h20",
 	puts("----------------------------------------------------------------")
 
 
-41.times do |i|
+49.times do |i|
 	
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
