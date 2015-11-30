@@ -40,7 +40,7 @@ $(".showPic").click(function(){
   var post_id = $(this).data("post");
   console.log(post_id); 
   $.ajax({
-    url: "http://localhost:3000/getPostInfo/"+post_id+"",
+    url: "/getPostInfo/"+post_id+"",
     success: function(data) {
       $(".modal-title").empty();
       $(".modal-title").append("<h3>"+data.name+"</h3>");
