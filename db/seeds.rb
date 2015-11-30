@@ -14,7 +14,7 @@
 	puts("----------------------------------------------------------------")
 
 
-20.times do |i|
+200.times do |i|
 	User.create(email: Faker::Internet.email, 
 					password: "password",
 					username: Faker::Internet.user_name)
@@ -39,7 +39,7 @@ User.create(email: "sebas@fishtank.h20",
 					)
 	puts("Post# #{i}")
 
-	rand(1..100).times do |y|
+	rand(1..10).times do |y|
 		Like.create(user_id: rand(User.second.id..User.last.id),
 								post_id: Post.last.id)
 		puts("Like# #{y} for Post# #{i}")

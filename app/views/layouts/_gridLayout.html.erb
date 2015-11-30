@@ -12,6 +12,17 @@
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
           <% end %>
+          <% post.likes.each do |like|%>
+              <%if like.user_id != current_user.id %>
+                <% @userliked = false %>
+              <%else%>
+                <% @userliked = true %>
+                <% break %>
+              <%end%>
+            <%end%>
+            <%if @userliked == false || post.likes.size == 0%>
+              <a class="linkOptions likePic" data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" href="#">Like</a>
+            <%end%>
             <a class="linkOptions showPic" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
