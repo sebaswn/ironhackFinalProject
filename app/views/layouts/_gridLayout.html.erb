@@ -48,7 +48,7 @@ $(".showPic").click(function(){
       $(".pictureView").append("<img class='imageShow' src='/images/original/"+data.image_file_name+"'>");
       $(".infoView").empty();
       $.ajax({
-        url: "http://localhost:3000//user/"+data.user_id+"/finduser",
+        url: "/user/"+data.user_id+"/finduser",
           success: function(data){
             $(".infoView").prepend("<b><h4>Photographer: </b>"+data[0].username+"</h4>");
           }
