@@ -3,7 +3,6 @@
   <% @posts.each do |post| %> 
     <div data-id="<%=post.id%>" class="active">
       <img data-id="<%=post.id%>" data-usr="<%=post.user_id%>" src="<%=post.image.url(:original) %>">
-      
         <div class="title"><h3><%=post.name%></h3></div>
         <div class="photographer">
           <h6>by:</h6>
@@ -14,6 +13,17 @@
              <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
           <% end %>
             <a class="linkOptions showPic" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
+            <% post.likes.each do |like|%>
+              <%if like.user_id != current_user.id %>
+                <% @userliked = false %>
+              <%else%>
+                <% @userliked = true %>
+                <% break %>
+              <%end%>
+            <%end%>
+            <%if @userliked == false || post.likes.size == 0%>
+              <a class="linkOptions likePic" data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" href="#">Like</a>
+            <%end%>
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
           <% end %>
@@ -33,7 +43,7 @@
                       <div class="col-md-8 pictureView">
                         Goodbye
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-3 infoView">
                         Hello
                     </div>
                   </div>
@@ -63,15 +73,46 @@ $(".showPic").click(function(){
     url: "http://localhost:3000/getPostInfo/"+post_id+"",
     success: function(data) {
       $(".modal-title").empty();
-      $(".modal-title").append(""+data.name+"");
+      $(".modal-title").append("<h3>"+data.name+"</h3>");
       $(".pictureView").empty();
       $(".pictureView").append("<img class='imageShow' src='/images/original/"+data.image_file_name+"'>");
+      $(".infoView").empty();
+      $.ajax({
+        url: "http://localhost:3000//user/"+data.user_id+"/finduser",
+          success: function(data){
+            $(".infoView").prepend("<b><h4>Photographer: </b>"+data[0].username+"</h4>");
+          }
+        });
+      $(".infoView").append("<b><h4>Description: </b>"+data.description+"")
+      $(".infoView").append("<b><h4>Location: </b>"+data.location+"")
+
+      $.ajax({
+        url: "http://localhost:3000/post/"+data.id+"/likes",
+          success: function(data){
+            $(".infoView").append("<b><h4>Likes: </b>"+data.length+"</h4>");
+          }
+        });
     },
     error: function(){
       console.log("this is not working")
     }
   })
   $(".active").children('#myModal').focus();
+});
+$(".likePic").click(function() {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/posts/likes/create",
+        data: {
+            post_id: $(this).data("postid"),
+            user_id: $(this).data("userid")
+        },
+        success: function() {
+          console.log("You have liked this picture");
+        }
+    });
+    $(this).hide();
 });
 
 $(".active").mouseover(function(){
@@ -106,6 +147,11 @@ $(".active").mouseout(function(){
 </script>
 
 <style>
+
+.pictureView{
+  border-right: 1px #e5e5e5 solid;
+  border-bottom: 1px #e5e5e5 solid;
+}
 
 .modal-content{
   background-color: #EDEDED;

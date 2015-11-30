@@ -5,6 +5,10 @@ class UsersController < ApplicationController
     	redirect_to :users_registration unless current_user
   	end 
 
+  	def getUserInfo 
+	     user = User.where(id: params[:id])
+	     render json: user
+	end
 
 	def show
 		user_id = params[:id]

@@ -1,16 +1,20 @@
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
-	puts("Destroying Users")
-	User.destroy_all
 	puts("Destroying Posts")
 	Post.destroy_all
 	puts("Destroying Contests")
 	Contest.destroy_all
+	puts("Destroying Votes")
+	Vote.destroy_all
+	puts("Destroying Likes")
+	Like.destroy_all
+	puts("Destroying Users")
+	User.destroy_all
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
 
 
-5.times do |i|
+20.times do |i|
 	User.create(email: Faker::Internet.email, 
 					password: "password",
 					username: Faker::Internet.user_name)
@@ -25,17 +29,27 @@ User.create(email: "sebas@fishtank.h20",
 	puts("----------------------------------------------------------------")
 
 
-42.times do |i|
+45.times do |i|
 	
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
-					description: Faker::Lorem.sentence, 
+					description: Faker::Lorem.paragraph, 
 					user_id: rand(User.first.id..User.last.id),
 					image: File.new("#{Rails.root}/app/assets/images/seed/#{i}.jpg")
 					)
-	
 	puts("Post# #{i}")
+
+	rand(1..100).times do |y|
+		Like.create(user_id: rand(User.second.id..User.last.id),
+								post_id: Post.last.id)
+		puts("Like# #{y} for Post# #{i}")
+	end
+		
 end
+
+
+
+
 
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
@@ -62,21 +76,21 @@ Contest.create(name: "Starts Today",
 					description: Faker::Lorem.sentence,
 					uploadBy: Date.new(2015, 11, 27),
 					voteBy: Date.new(2015, 11, 29),
-					endBy: Date.new(2015, 12, 30)
+					endBy: Date.new(2015, 11, 30)
 				)
 
 Contest.create(name: "Started Yesterday",
 					description: Faker::Lorem.sentence,
 					uploadBy: Date.new(2015, 11, 26),
 					voteBy: Date.new(2015, 11, 29),
-					endBy: Date.new(2015, 12, 30)
+					endBy: Date.new(2015, 11, 30)
 				)
 
 Contest.create(name: "Voting Open",
 					description: Faker::Lorem.sentence,
 					uploadBy: Date.new(2015, 11, 26),
 					voteBy: Date.new(2015, 11, 27),
-					endBy: Date.new(2015, 12, 30)
+					endBy: Date.new(2015, 11, 30)
 				)
 Post.all.each do |x|
 		post_id = x.id
@@ -90,7 +104,26 @@ Contest.create(name: "Voting Still Open",
 					description: Faker::Lorem.sentence,
 					uploadBy: Date.new(2015, 11, 24),
 					voteBy: Date.new(2015, 11, 27),
-					endBy: Date.new(2015, 12, 30)
+					endBy: Date.new(2015, 11, 30)
+				)
+num = 0
+Post.all.each do |x|
+		post_id = x.id
+		post_to_look_for = Post.where(id: post_id)[0]
+		user_to_look_for = User.where(id: post_to_look_for.user_id)[0]
+		Contest.last.posts<<(Post.where(id: post_id))
+		Contest.last.users<<(user_to_look_for)
+		num = num +1
+		if num == 17
+			break
+		end
+	end
+
+Contest.create(name: "Finished",
+					description: Faker::Lorem.sentence,
+					uploadBy: Date.new(2015, 11, 24),
+					voteBy: Date.new(2015, 11, 27),
+					endBy: Date.new(2015, 11, 29)
 				)
 num = 0
 Post.all.each do |x|
@@ -105,6 +138,13 @@ Post.all.each do |x|
 		end
 		
 	end
+Contest.last.posts.each do |z|
+	rand(1..30).times do |w|
+		Vote.create(post_id: z.id,
+							contest_id: Contest.last.id,
+							user_id: rand(User.first.id..User.last.id))
+	end
+end
 
 
 

@@ -84,6 +84,58 @@
             <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you  sure?' } %></td>
           <% end %>
             <td><%= link_to 'Show', contest %></td>
+
+          <% contest.votes do |vote| %>
+            <% if vote.user_id != current_user.id %>
+              <% @userVoted = false %>
+            <%else%>
+              <% @userVoted = true %>
+              <% break %>
+            <%end%>
+          <%end%>
+
+          <% if @userVoted == false || contest.votes.size == 0 %>
+            <td><%= link_to 'Vote', contest_vote_path(contest) %></td>
+          <%end%>
+          
+        <%end%>
+
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+
+
+<strong><h1>Closed Competitions</h2></strong>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Start</th>
+      <th>Close</th>
+      <th>End</th>
+      <th>Posts</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contests.each do |contest| %>
+      <tr>
+        <% if contest.endBy <= Date.today%>
+          <td><%= contest.name %></td>
+          <td><%= contest.description %></td>
+          <td><%= contest.uploadBy %></td>
+          <td><%= contest.voteBy %></td>
+          <td><%= contest.endBy %></td>
+          <td><%= contest.posts.size %></td>
+          <% if current_user.role == "mod" %>
+            <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
+            <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you  sure?' } %></td>
+          <% end %>
+            <td><%= link_to 'See Winners', contest_winner_path(contest.id) %></td>
           <% contest.users.each do |user| %>
             <% if user.id != current_user.id %>
               <% @userEntered = false %>
@@ -93,7 +145,7 @@
             <%end%>
           <%end%>
 
-            <td><%= link_to 'Vote', contest_vote_path(contest) %></td>
+            
 
         <%end%>
 
@@ -102,7 +154,6 @@
 
   </tbody>
 </table>
-
 <br>
 
 <%= link_to 'New Contest', new_contest_path %>

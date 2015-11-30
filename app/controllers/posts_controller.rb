@@ -19,6 +19,7 @@ class PostsController < ApplicationController
   end
 
   def showAll
+    @userliked = false
     @posts = Post.all.order(created_at: :desc)
   end
 
@@ -26,7 +27,51 @@ class PostsController < ApplicationController
     @posts = Post.order("RANDOM()").limit(Post.count)
   end
 
- 
+
+
+
+  def showPopular
+    sorted = []
+    poststosort = Post.all
+    results = poststosort.sort{|a,b| b.likes.count<=>a.likes.count}
+
+    @posts = results
+    
+  end
+
+
+
+
+
+
+
+
+    def sortposts(posts)
+      for j in 1..posts.count-1 do
+        key = posts[j-1]
+        i = j - 1
+        while i >= 0 and posts[i].likes.count > key.likes.count do
+          posts[i+1] = posts[i]
+          i = i - 1
+        end
+        posts[i+1] = key
+      end 
+      @posts = posts
+    end
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   # GET /posts/1
   # GET /posts/1.json

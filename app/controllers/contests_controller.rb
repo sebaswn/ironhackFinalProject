@@ -8,6 +8,24 @@ class ContestsController < ApplicationController
   # GET /contests
   # GET /contests.json
 
+  def winner
+    biggest = 0
+    winner = 0
+    Contest.find_by(id: params[:id]).posts.each do |post|
+      count = 0
+      post.votes.where(contest_id: Contest.find_by(id: params[:id]).id).each do |vote|
+        count = count + 1
+      end
+      if count >= biggest
+        biggest = count
+        winner = post.id
+      end
+    end
+
+    @winner = Post.find_by(id: winner)
+  end
+
+
   def enter
     @userEntered = false
     contest_id = params[:id]
@@ -23,6 +41,7 @@ class ContestsController < ApplicationController
   end
 
   def vote
+    @userEntered = true
     contest_id = params[:id]
     @contest = Contest.where(id: contest_id)
   end
