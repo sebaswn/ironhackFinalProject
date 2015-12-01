@@ -20,9 +20,11 @@ Rails.application.routes.draw do
  get '/front', to: 'registration#loginOrSignUp', as: 'users_registration'
  get '/', to: 'posts#showAll', as: 'posts_showAll'
 
+ get '/posts/show/findAll' =>'posts#findAll'
  get '/posts/show/all' =>'posts#showAll'
  get '/posts/show/random' =>'posts#showRandom'
  get '/posts/show/popular' =>'posts#showPopular'
+ get '/posts/show/location' => 'posts#showLocation'
  get 'getPostInfo/:id' => 'posts#getPostInfo'
 
  post '/posts/likes/create', to: 'likes#create'

@@ -29,12 +29,14 @@ User.create(email: "sebas@fishtank.h20",
 	puts("----------------------------------------------------------------")
 
 
-20.times do |i|
+45.times do |i|
 	
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
 					description: Faker::Lorem.paragraph, 
 					user_id: rand(User.first.id..User.last.id),
+					coordinateX: Faker::Address.longitude.to_f,
+					coordinateY: Faker::Address.latitude.to_f,
 					image: File.new("#{Rails.root}/app/assets/images/seed/#{i}.jpg")
 					)
 	puts("Post# #{i}")

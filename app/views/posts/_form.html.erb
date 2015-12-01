@@ -25,12 +25,20 @@
   </div>
   <div class="field">
     <%= f.label :location %><br>
-    <%= f.text_field :location %>
+    <%= f.text_field :location, :id => 'get-places' %>
   </div>
+
 
   <div class="field">
    <%= f.hidden_field :user_id, :value => current_user.id %>
   </div>
+  <div class="x">
+   <%= f.hidden_field :coordinateX %>
+  </div>
+  <div class="y">
+   <%= f.hidden_field :coordinateY %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

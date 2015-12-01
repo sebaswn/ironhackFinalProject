@@ -1,0 +1,234 @@
+
+
+<%= render "layouts/navbar" %>
+<div id="map"></div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-xl inverse" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-8 pictureView">
+            Goodbye
+          </div>
+          <div class="col-md-4 infoView">
+            Hello
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script>
+
+
+var map
+
+if ("geolocation" in navigator){
+	navigator.geolocation.getCurrentPosition(onLocation);
+}
+function onLocation(position){
+// We can't just directly feed the position into our google map
+// The objects are formatted differently, google maps is looking for
+// an object with "lat" and "lng" keys.
+  var myPosition = {
+    lat: position.coords.latitude,
+    lng: position.coords.longitude
+  };
+
+  createMap(myPosition);
+}
+
+function createMap(position){
+  	var mapOptions = {
+    center: position,
+    zoom: 10
+	  };
+	  map = new google.maps.Map($('#map')[0], mapOptions);
+	  google.maps.event.addListenerOnce(map, 'idle', function() {
+       $.ajax({
+				  url: "/posts/show/findAll",
+				  success: function(data) {
+				  	for (i = 0; i < data.length; i++) { 
+				      var position = {
+				        lat: data[i].coordinateY,
+				        lng: data[i].coordinateX
+				      }
+				      createMarker(position, data[i].id);
+				    }
+				  }
+				});
+
+    });
+	}
+
+
+function createMarker(position, index) {
+  var marker = new google.maps.Marker({
+    position: position,
+    map: map
+  });
+  google.maps.event.addListener(marker, 'click', function() {
+    var post_id = index;
+    console.log(post_id);
+    $.ajax({
+      url: "/getPostInfo/" + post_id + "",
+      success: function(data) {
+    	
+
+        $(".modal-title").empty();
+        $(".modal-title").append("<h3>" + data.name + "</h3>");
+        $(".pictureView").empty();
+        $(".pictureView").append("<img data-postid=" + data.id +
+          " class='imageShow' src='/images/original/" + data.image_file_name +
+          "'>");
+        $(".infoView").empty();
+        $.ajax({
+          url: "/user/" + data.user_id + "/finduser",
+          success: function(data) {
+            $(".infoView").prepend(
+              "<b><h4>Photographer: </b>" + data[0].username +
+              "</h4>");
+          }
+        });
+        $(".infoView").append("<b><h4>Description: </b>" + data.description +
+          "")
+        $(".infoView").append("<b><h4>Location: </b>" + data.location +
+          "")
+     
+        $.ajax({
+          url: "/post/" + data.id + "/likes",
+          success: function(data) {
+            $(".infoView").append("<b><h4>Likes: </b>" + data
+              .length + "</h4>");
+          }
+        });
+        $.ajax({
+          url: "/posts/" + data.id + "/comments",
+          success: function(data) {
+            $(".infoView").append(
+              "<div class='comments'> <b><h4>Comments: </b></h4><ul>"
+            );
+            for (i = 0; i < data.length; i++) {
+              $(".comments").append("<li>" + data[i].content +
+                "</li>")
+            }
+            $(".infoView").append(
+              "<textarea id='comment' class='comment' rows='3' cols='45px' placeholder='comment' maxlength='140'></textarea>"
+            )
+            $(".infoView").append(
+              "<button data-userid='<%=current_user%>' class='submitComment'>Comment</button>"
+            )
+   					$('#myModal').modal()  
+          }
+        });
+
+
+      },
+      error: function() {
+        console.log("This is not working")
+      }
+    })
+  });
+
+  return marker;
+}
+$("body").on("click", ".submitComment", function() {
+     console.log("click")
+      comment = document.getElementById("comment").value;
+      console.log(comment)
+      if (comment != ""){
+        $.ajax({
+          type: "POST",
+          url: "/post/comments/create",
+          data: {
+                user_id: $(this).data("userid"),
+                post_id: $('.imageShow').data("postid"),
+                content: comment
+
+          },
+          success: function(){
+            $(".comment").val('');
+            $(".comments").append("<li>"+comment+"</li>");
+          }
+        })
+      }
+
+     
+ })
+
+
+</script>
+
+
+<style>
+	#map{
+		padding-top: 500px;
+		height: 100%;
+		width: 100%;
+		
+	}
+	body{
+		height: 100%;
+		width: 100%;
+		background-color: #EDEDED;
+	}
+
+
+
+textarea{
+  resize: none;
+}
+
+.infoView{
+  height: 80vh;
+  overflow: auto;
+  border-bottom: 2px #e5e5e5 solid;
+ 
+}
+
+.pictureView{
+  border-right: 1px #e5e5e5 solid;
+  border-bottom: 1px #e5e5e5 solid;
+}
+.modal-title{
+	text-align: center;
+}
+
+.modal-content{
+  background-color: #EDEDED;
+  color: black;
+}
+.modal-xl {
+    width: 90%;
+   max-width:1200px;
+   font-family: 'Slabo 27px', serif;
+   max-height: 100px;
+   background-color: black;
+  }
+
+.pictureView{
+  text-align: center;
+  padding-bottom: 10px;
+}
+.imageShow{
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+
+
+
+</style>

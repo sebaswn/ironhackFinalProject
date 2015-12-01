@@ -18,6 +18,16 @@ class PostsController < ApplicationController
     @posts = Post.where(user_id: user_id)
   end
 
+  def findAll
+    posts = Post.all
+    render json: posts
+  end
+  
+
+  def showLocation
+    
+  end
+
   def showAll
     @userliked = false
     @posts = Post.all.order(created_at: :desc)
@@ -38,37 +48,6 @@ class PostsController < ApplicationController
     @posts = results
     
   end
-
-
-
-
-
-
-
-
-    def sortposts(posts)
-      for j in 1..posts.count-1 do
-        key = posts[j-1]
-        i = j - 1
-        while i >= 0 and posts[i].likes.count > key.likes.count do
-          posts[i+1] = posts[i]
-          i = i - 1
-        end
-        posts[i+1] = key
-      end 
-      @posts = posts
-    end
-    
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -137,6 +116,6 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      params.require(:post).permit(:name, :description, :location, :picture, :user_id, :image)
+      params.require(:post).permit(:name, :description, :location, :picture, :user_id, :image, :coordinateX, :coordinateY)
     end
 end

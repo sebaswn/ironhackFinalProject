@@ -20,6 +20,7 @@
             </div>
 
 
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
 <script>
  $(".showPic").click(function() {
@@ -52,6 +53,10 @@
                  "")
              $(".infoView").append("<b><h4>Location: </b>" +
                  data.location + "")
+             $(".infoView").append("<div data-x='"+data.coordinateX+"' data-y='"+data.coordinateY+"' id='map'></div>")
+            onLocation(data.coordinateX, data.coordinateY);
+            
+
              $.ajax({
                  url: "/post/" + data.id + "/likes",
                  success: function(data) {
@@ -89,7 +94,50 @@
          }
      })
      $(".active").children('#myModal').focus();
+
  });
+
+
+
+  var map;  
+function onLocation(positionx, positiony){
+ 
+  // We can't just directly feed the position into our google map
+  // The objects are formatted differently, google maps is looking for
+  // an object with "lat" and "lng" keys.
+    var myPosition = {
+      lat: positiony,
+      lng: positionx
+    };
+ 
+    createMap(myPosition);
+  }
+
+function createMap(position){
+    var mapOptions = {
+    center: position,
+    zoom: 9
+    };
+    map = new google.maps.Map($('#map')[0], mapOptions);
+    google.maps.event.addListenerOnce(map, 'idle', function() {
+       google.maps.event.trigger(map, 'resize');
+       map.setCenter(position);
+    });
+    createMarker(position)
+  }
+
+  
+
+  function createMarker(position) {
+   var marker = new google.maps.Marker({
+     position: position,
+     map: map
+   });
+  }
+
+
+
+
  $("body").on("click", ".submitComment", function() {
      console.log("click")
       comment = document.getElementById("comment").value;
@@ -97,7 +145,7 @@
       if (comment != ""){
         $.ajax({
           type: "POST",
-          url: "post/comments/create",
+          url: "/post/comments/create",
           data: {
                 user_id: $(this).data("userid"),
                 post_id: $('.imageShow').data("postid"),
@@ -125,6 +173,17 @@
 
 
 <style>
+.map{
+    height: 200px;
+    width: 100%;
+
+  }
+#map{
+  height: 200px;
+  width: 100%;
+  background-color: red;
+}
+
 textarea{
   resize: none;
 }
