@@ -1,6 +1,9 @@
 <%= render "layouts/navbar" %>
 <p id="notice"><%= notice %></p>
 
+<%= image_tag @contest.cover.url %>
+<%= image_tag @contest.cover.url(:long) %>
+
 <p>
   <strong>String:</strong>
   <%= @contest.name %>
@@ -27,6 +30,7 @@
 </p>
 <%= render partial: "layouts/gridLayout", locals: {posts: @contest.posts} %>
  <%= render "layouts/showModal" %>
+
 
 
 

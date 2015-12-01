@@ -41,7 +41,7 @@ class ContestsController < ApplicationController
   end
 
   def vote
-    @userEntered = true
+    @userVoted = false
     contest_id = params[:id]
     @contest = Contest.where(id: contest_id)
   end
@@ -122,6 +122,6 @@ class ContestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contest_params
-      params.require(:contest).permit(:name, :description, :uploadBy, :voteBy, :endBy)
+      params.require(:contest).permit(:name, :description, :uploadBy, :voteBy, :endBy, :cover)
     end
 end

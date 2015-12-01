@@ -47,7 +47,7 @@ function fetchRandom() {
         while (i < 5) {
             console.log(data[i].image_file_name)
             $("#myContent").prepend(
-                '<div data-contestid="<%=@contest[0].id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
+                '<div data-contestid="<%=@contest[0].id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
                             data[i].id +
                             '" data-usr="' +
                             data[i].user_id +
@@ -77,7 +77,7 @@ function fetchRandom() {
                     console.log(i)
                     while (i < x) {
                         $("#myContent").prepend(
-                            '<div data-contestid="<%=@contest[0].id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
+                            '<div data-contestid="<%=@contest[0].id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
                             data[i].id +
                             '" data-usr="' +
                             data[i].user_id +
@@ -100,7 +100,7 @@ function fetchRandom() {
             console.log(i)
             while (i < x) {
                 $("#myContent").prepend(
-                    '<div data-id="+data[i].id+" class="active"><img data-id="' +
+                    '<div data-id="+data[i].id+" data-userid="<%=current_user.id%>" class="active"><img data-id="' +
                     data[i].id + '" data-usr="' + data[
                         i].user_id +
                     '" src=/images/original/' + data[i]
