@@ -23,7 +23,7 @@
             <%if @userliked == false || post.likes.size == 0%>
               <a class="linkOptions likePic" data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" href="#">Like</a>
             <%end%>
-            <a class="linkOptions showPic" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
+            <a class="linkOptions showPic" data-userid="<%=post.user_id%>" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
           <% end %>

@@ -26,6 +26,7 @@
  $(".showPic").click(function() {
      event.preventDefault();
      var post_id = $(this).data("post");
+     var user_id = $(this).data("userid");
      console.log(post_id);
      $.ajax({
          url: "/getPostInfo/" + post_id + "",
@@ -70,16 +71,27 @@
                  url: "/posts/" + data.id +
                      "/comments",
                  success: function(data) {
-
+                      
                      $(".infoView").append(
                          "<div class='comments'> <b><h4>Comments: </b></h4><ul>"
                      );
-                     for (i = 0; i < data.length; i++) {
-                         $(".comments").append(
-                             "<li>" + data[
-                                 i].content +
-                             "</li>")
-                     }
+                   
+                     for (var t = 0; t < data.length; t++) {
+                        var content = data[t].content
+                        debugger;
+                        $.ajax({
+                          type: "GET", 
+                          url: "/user/"+data[t].user_id+"/finduser",
+                          success: function(data){
+                            debugger;
+                            $(".comments").append('<div class="col-md-12 comment"><div class="row"><div class="col-xs-2 prof"><a class="linkToUser" href="/users/'+data[0].id+'"><img src="/avatars/thumb/'+data[0].avatar_file_name+'"></a>&nbsp;'+data[0].username+'</div><div class="col-xs-9 " id="'+data[0].id+'">'+content+'</div></div>'); 
+                              }
+                         })
+                        debugger;
+                         
+                          
+                        }
+                     
                      $(".infoView").append(
                          "<textarea id='comment' class='comment' rows='3' cols='45px' placeholder='comment' maxlength='140'></textarea>"
                      )
@@ -154,7 +166,10 @@ function createMap(position){
           },
           success: function(){
             $(".comment").val('');
-            $(".comments").append("<li>"+comment+"</li>");
+            
+                $(".comments").append('<div class="col-md-12 comment"><div class="row"><div class="col-xs-2 prof"><a class="linkToUser" href="/users/<%=current_user.id%>"><%= image_tag current_user.avatar.url(:thumb) %></a>&nbsp;<%=current_user.username%></div><div class="col-xs-9">'
+                    +comment+
+                    "</div></div>");
           }
         })
       }
@@ -163,16 +178,23 @@ function createMap(position){
  })
 
 
-
-
-
-
-
-
 </script>
 
-
 <style>
+.prof{
+  padding-right: = 0px;
+  padding-top: 5px;
+}
+.comment{
+  
+  border-top: 1px #DCDCDC solid;
+  border-right:1px #DCDCDC solid;
+  border-left: 1px #DCDCDC solid;
+  width: 100%;
+  padding-right: 0px;
+
+}
+
 .map{
     height: 200px;
     width: 100%;

@@ -17,12 +17,14 @@
 10.times do |i|
 	User.create(email: Faker::Internet.email, 
 					password: "password",
-					username: Faker::Internet.user_name)
+					username: Faker::Internet.user_name,
+					avatar: File.new("#{Rails.root}/app/assets/images/avatars/#{i}.jpg"))
 	puts("User# #{i}")
 end
 User.create(email: "sebas@fishtank.h20",
 	password: "password", 
 	username: "sebas",
+	avatar: File.new("#{Rails.root}/app/assets/images/avatars/sebas.jpg"),
 	role: "mod")
 	puts("Created Admin User")
 	puts("----------------------------------------------------------------")
