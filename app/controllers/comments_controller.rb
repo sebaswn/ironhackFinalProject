@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
 
 
   def findComments
-    comments = Comment.where(post_id: params[:id])
+    comments = Comment.where(post_id: params[:id]).order(:created_at)
     render json: comments
   end
 

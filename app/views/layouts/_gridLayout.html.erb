@@ -3,15 +3,13 @@
     <div data-id="<%=post.id%>" class="active">
       <img data-id="<%=post.id%>" data-usr="<%=post.user_id%>" src="<%=post.image.url(:original) %>">
       
-        <div class="title"><h3><%=post.name%></h3></div>
+        <div class="title"><h3><%=post.name%></h3>
+        </div>
         <div class="photographer">
           <h6>by:</h6>
-          <a class="linkToUser" href="/users/<%=post.user_id%>"><h4><%=User.where(id: post.user_id)[0].username%></h4><a>
+          <a class="linkToUser" href="/users/<%=post.user_id%>"><h4><%=User.where(id: post.user_id)[0].username%></h4></a>
         </div>
-        <div class="links">
-          <% if current_user.id === post.user_id %>
-             <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
-          <% end %>
+        <div class="likeDiv">
           <% post.likes.each do |like|%>
               <%if like.user_id != current_user.id %>
                 <% @userliked = false %>
@@ -20,9 +18,18 @@
                 <% break %>
               <%end%>
             <%end%>
-            <%if @userliked == false || post.likes.size == 0%>
-              <a class="linkOptions likePic" data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" href="#">Like</a>
+            <%if @userliked == false || post.likes.size == 0 %>
+                <button class="buttonOptions likePic unlikedpic" data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" ><b><span class='glyphicon glyphicon-heart' style="white !important" aria-hidden='true'></span><span class="layoutLike"></span></b></button>
             <%end%>
+            <%if @userliked == true || post.likes.size == 0 %>
+                <button class="buttonOptions likePic likedpic"  data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" ><b><span class='glyphicon glyphicon-heart' aria-hidden='true'></span><span class="layoutLike"></span></b></button>
+            <%end%>
+        </div>
+               
+        <div class="links">
+          <% if current_user.id === post.user_id %>
+             <a class="linkOptions" href="/posts/<%=post.id%>/edit">Edit</a>
+          <% end %>
             <a class="linkOptions showPic" data-userid="<%=post.user_id%>" data-post="<%=post.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
           <% if current_user.id === post.user_id %>
              <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=post.id%>">Delete</a>
@@ -41,11 +48,18 @@
   $(".title").hide();
   $(".photographer").hide();
   $(".links").hide();
+  $(".likeDiv").hide();
+
+
+
   $(".linkOptions").css("color", "white");
+  $(".buttonOptions").css("color", "white");
+
   $(".linkToUser").css("color", "white");
 
-$(".likePic").click(function() {
+$("body").on("click", ".unlikedpic",  function() {
     event.preventDefault();
+
     $.ajax({
         type: "POST",
         url: "/posts/likes/create",
@@ -54,20 +68,43 @@ $(".likePic").click(function() {
             user_id: $(this).data("userid")
         },
         success: function() {
-          console.log("You have liked this picture");
         }
     });
-    $(this).hide();
+
+    $(this).toggleClass("unlikedpic likedpic")
+  
 });
+
+
 
 $(".active").mouseover(function(){
   console.log("hello");
+  
+  $.ajax({
+     url: "/post/" +$(this).children("img").data("id")+ "/likes",
+     success: function(data) {
+      $(".layoutLike").text(data.length);
+      show = true
+       }
+ });
+  
+  $(this).children(".likeDiv").show();
+  
   $(this).children(".title").show();
   $(this).children(".photographer").show();
   $(this).children(".links").show();
+  
   $(this).children('img').css("opacity","0.5");
   $(this).children('img').css("filter","alpha(opacity=50)");
 });
+
+$(".unlikedpic").mouseover(function(){
+  $(this).css("background-color", "#DE4040");
+})
+
+$(".unlikedpic").mouseout(function(){
+  $(this).css("background-color", "rgba(222,64,64,0.5)");
+})
 
 $(".linkOptions").hover(function(){
   $(this).css("background-color", "transparent");
@@ -82,6 +119,7 @@ $(".linkToUser").hover(function(){
 $(".active").mouseout(function(){
   $(this).children('img').css("opacity","1");
   $(".title").hide();
+  $(".likeDiv").hide();
   $(".photographer").hide();
   $(".links").hide();
   $(this).children('img').css("filter","alpha(opacity=100)");
@@ -92,8 +130,48 @@ $(".active").mouseout(function(){
 </script>
 
 <style>
+.unlikedpic{
+    background-color: rgba(222,64,64,0.5);
+}
+
+.likedpic{
+    background-color: #DE4040 !important;
+
+}
+
+.layoutLike{
+  color: white;
+  position: relative;
+  
+
+}
+button:focus {outline:0;}
+
+.likeDiv{
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px;  
+    top: 60%; 
+    left: 50px;
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+
+.buttonOptions{
+  border: 1px transparent solid;
+  border-radius: 3px;
+  text-align: center;
+  color: white;
+  width: 50px;
+  position: relative;
+  right: 50px;
+  text-decoration: none;
 
 
+}
 body{
   background-color: #EDEDED;
 }
@@ -104,8 +182,7 @@ body{
 
 .linkOptions{
   color: white;
-  padding-left: 7px;
-
+  padding-left: 0px;
 }
 
 .seeMore{
@@ -145,7 +222,7 @@ h3 {
     text-align: center;
     height: 0px; 
     right: 0; 
-    top: 15%; 
+    top: 10%; 
     bottom: 0; 
     background: red; 
     color:white;
@@ -157,7 +234,7 @@ h3 {
     text-align: center;
     height: 0px; 
     right: 0; 
-    top: 35%; 
+    top: 30%; 
     bottom: 0; 
     background: red; 
     color:white;
@@ -169,7 +246,7 @@ h3 {
     text-align: center;
     height: 0px; 
     right: 0; 
-    top: 70%; 
+    top:80%; 
     bottom: 0; 
     background: red; 
     color: white;

@@ -10,7 +10,7 @@
 
 
   
-   has_attached_file :avatar, :styles => { :original => "300x300#", :thumb => "40x40#", :tiny => "20x20#" }, :default_url => "/images/:style/default_image.png", :url => "/avatars/:style/:basename.:extension" 
+   has_attached_file :avatar, :styles => { :original => "300x300#", :thumb => "40x40#", :tiny => "20x20#" }, :default_url => "/images/:style/default_avatar.png", :url => "/avatars/:style/:basename.:extension" 
    validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
   
   devise :database_authenticatable, :registerable,
