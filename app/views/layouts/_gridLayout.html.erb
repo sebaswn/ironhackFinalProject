@@ -21,7 +21,7 @@
             <%if @userliked == false || post.likes.size == 0 %>
                 <button class="buttonOptions likePic unlikedpic" data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" ><b><span class='glyphicon glyphicon-heart' style="white !important" aria-hidden='true'></span><span class="layoutLike"></span></b></button>
             <%end%>
-            <%if @userliked == true || post.likes.size == 0 %>
+            <%if @userliked == true%>
                 <button class="buttonOptions likePic likedpic"  data-userid="<%=current_user.id%>" data-postid="<%=post.id%>" ><b><span class='glyphicon glyphicon-heart' aria-hidden='true'></span><span class="layoutLike"></span></b></button>
             <%end%>
         </div>
@@ -169,7 +169,7 @@ button:focus {outline:0;}
   position: relative;
   right: 50px;
   text-decoration: none;
-
+  bottom: 7px;
 
 }
 body{

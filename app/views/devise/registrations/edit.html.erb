@@ -1,8 +1,11 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
 
+
+
+<div class='row'>
+
+  <div class="col-md-12 info">
+  <h1>Edit <%= resource_name.to_s.humanize %></h1>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
@@ -42,8 +45,57 @@
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+</div>
+</div>
 
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
-<%= link_to "Back", :back %>
+
+
+<style>
+.info{
+  background-color: rgba(0,0,0,0.3);
+  text-align: center;
+  height: 100vh;
+
+}
+#user_avatar{
+  position: relative;
+  left: 40px;
+}
+
+  h1{
+    font-size: 50px;
+  }
+
+  label{
+    font-size: 25px;
+  }
+body{
+  padding: 0px;
+}
+  input[type=text], input[type=email], input[type=password]{
+    width: 300px;
+
+    text-align: center;
+    height: 25px;
+    background-color:rgba(255,255,255,0.8);
+    border: 1px solid grey;
+    border-radius: 5px;
+  }
+  .btnSignUp{
+    width: 15%;
+    background-color: rgba(51,122,183,0.5);
+    color: white;
+  }
+  body{
+    text-align: center;
+    color: white;
+    background-image: url("/assets/cats4.jpg");
+    background-size: 100%;
+    font-family: 'Slabo 27px', serif;
+    background-repeat: no-repeat;
+   
+  }
+
+</style>

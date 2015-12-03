@@ -11,6 +11,7 @@ class ContestsController < ApplicationController
   def winner
     biggest = 0
     winner = 0
+    @contest = Contest.find_by(id: params[:id])
     Contest.find_by(id: params[:id]).posts.each do |post|
       count = 0
       post.votes.where(contest_id: Contest.find_by(id: params[:id]).id).each do |vote|
@@ -29,7 +30,7 @@ class ContestsController < ApplicationController
   def enter
     @userEntered = false
     contest_id = params[:id]
-    @contest = Contest.where(id: contest_id)
+    @contest = Contest.find_by(id: contest_id)
   end
 
   def add
@@ -43,7 +44,7 @@ class ContestsController < ApplicationController
   def vote
     @userVoted = false
     contest_id = params[:id]
-    @contest = Contest.where(id: contest_id)
+    @contest = Contest.find_by(id: contest_id)
   end
 
   def findVotePosts

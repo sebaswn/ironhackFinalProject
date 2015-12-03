@@ -1,30 +1,46 @@
 
 <%= render "layouts/navbar" %>
-<p id="notice"><%= notice %></p>
-						
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+
+
+<% contest = @contest %>
+
+<div data-id="<%=contest.id%>" class="activeBanner">
+    <img data-id="<%=contest.id%>" src="<%=contest.cover.url(:long)%>">
     
-    <div class="row">
-        <div class="col-md-3">
-            <p><strong>Name:</strong> <%= @contest[0].name %></p>
-            <p><strong>Description:</strong> <%= @contest[0].description %></p>
-            <p><strong>Datetime:</strong> <%= @contest[0].uploadBy %></p>
-            <p><strong>Datetime:</strong> <%= @contest[0].voteBy %></p>
-            <p><strong>Datetime:</strong> <%= @contest[0].endBy %></p>
-            <button class="next">next</button>
-            <%= link_to 'Edit', edit_contest_path(@contest) %> |
-            <%= link_to 'Back', contests_path %>
-        </div>
-        <div class="col-md-9 votingDiv">
+      <div class="titleBanner"><h1><%=contest.name%></h1></div>
+      <div class="description"><h2><%=contest.description%></h1></div>
+      <div class="timeTill">
+        <% if contest.uploadBy >= Date.today && contest.voteBy > Date.today %>
+          <h2>You have <%= (contest.voteBy - Date.today).to_i %> days to enter. </h2>
+        <%end%>
+        <% if contest.uploadBy < Date.today && contest.voteBy <= Date.today  && contest.endBy > Date.today %>
+          <h2>You have <%= (contest.endBy - Date.today).to_i %> days to Vote. </h2>
+        <%end%>
+
+      <% if contest.endBy <= Date.today%>
+         <% if((Date.today - contest.endBy).to_i == 0)%>
+          <% elsif ((Date.today - contest.endBy).to_i == 1) %>
+            Contest ended <%= (Date.today - contest.endBy).to_i %> day ago. 
+          <% else %>
+            Contest ended <%= (Date.today - contest.endBy).to_i %> days ago.
+        <%end%>
+      <%end%>
+
+      </div>
+  
+  </div>
+
+<br>
+
+        <div class="votingDiv">
+            <div class="step">
+                <h2>Step 1 of 17</h2>
+            </div>
             <div id="myContent">
             </div>
         </div>
-</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 </body>
 </html>
 
@@ -41,13 +57,19 @@ $(document).ready(function() {
 
 function fetchRandom() {
     $.ajax({
-        url: "/contest/<%=@contest[0].id%>/vote/findposts",
+        url: "/contest/<%=@contest.id%>/vote/findposts",
     }).done(function(data) {
+        step = 1
+            var steps = (data.length/5)
+            steps = Math.round(steps);
+            $(".step").empty()
+            $(".step").append("<h3>Step "+step+" of "+ steps+"</h3>")
+
+            
         i = 0;
         while (i < 5) {
-            console.log(data[i].image_file_name)
             $("#myContent").prepend(
-                '<div data-contestid="<%=@contest[0].id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
+                '<div data-contestid="<%=@contest.id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
                             data[i].id +
                             '" data-usr="' +
                             data[i].user_id +
@@ -71,13 +93,22 @@ function fetchRandom() {
                     user_id: $(this).data("userid")
                 },
                 success: function() {
+                    step = step + 1;
+                    if (step > steps){
+                        $(".step").empty();
+                        $(".step").append("<h3>Thank You for voting. <br> Come back at the end of the competition to see the winner.</h3>");
+                    }else{
+                        $(".step").empty();
+                        $(".step").append("<h3>Step "+step+" of "+ steps+"</h3>");
+
+                    }
                     console.log("asdf")
                     $("#myContent").empty()
                     x = i + 5
                     console.log(i)
                     while (i < x) {
                         $("#myContent").prepend(
-                            '<div data-contestid="<%=@contest[0].id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
+                            '<div data-contestid="<%=@contest.id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
                             data[i].id +
                             '" data-usr="' +
                             data[i].user_id +
@@ -94,6 +125,7 @@ function fetchRandom() {
                 }
             });
         })
+        
         $(".next").click(function() {
             $("#myContent").empty()
             x = i + 5
@@ -169,10 +201,136 @@ $("body").on("mouseout", ".active", function(){
 
 });
 
+
+  $(".activeBanner").children(".titleBanner").show();
+  $(".activeBanner").children(".links").show();
+  $(".activeBanner").children(".timeTill").show();
+  $(".activeBanner").children(".description").show();
+  $(".activeBanner").children('img').css("opacity","0.5");
+  $(".activeBanner").children('img').css("filter","alpha(opacity=50)");
+
+
+$(".link").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+$(".linkToUser").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+
+
+
+
 </script>
 
 
 <style>
+.jumbotron{
+  background-color: black;
+  color: white;
+}
+.linkOptions{
+  color: white;
+  padding-left: 7px;
+
+}
+.btnEnter{
+    width: 17%;
+    background-color: rgba(92,184,92,0.5);
+    color: white;
+  }
+  body{
+    text-align: center;
+  }
+
+.btnSee{
+
+    width: 17%;
+  background-color: rgba(51,122,183,0.5);
+  color: white;
+}
+.btnEdit{
+  width: 17%;
+ background-color:  rgba(239,172,77,0.5);
+}
+
+.activeBanner {
+    background-color: black;
+    position:relative; 
+  
+}
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+ h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+
+ body{
+  background-color: #EDEDED;
+ }
+
+.titleBanner {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 15%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.timeTill {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 50%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.description {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 30%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+
+.links {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 70%; 
+    bottom: 0; 
+
+    color: white;
+    font-family: 'Slabo 27px', serif;
+}
+
+
+
+
 
 
 
@@ -196,9 +354,7 @@ $("body").on("mouseout", ".active", function(){
   max-width: 100%;
   max-height: 80vh;
 }
-body{
-  background-color: #EDEDED;
-}
+
 .modal-title{
   text-align: center;
 }
@@ -230,15 +386,8 @@ body{
     position:relative; 
 }
 
-h3 {
-    margin-top: 0px;
-    margin-bottom: 5px;
-}
 
- h6 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
+
 
 .title {
     position: absolute; 
@@ -260,18 +409,6 @@ h3 {
     top: 35%; 
     bottom: 0; 
     color:white;
-    font-family: 'Slabo 27px', serif;
-}
-.links {
-    position: absolute; 
-    width: 100%;
-    text-align: center;
-    height: 0px; 
-    right: 0; 
-    top: 70%; 
-    bottom: 0; 
-    
-    color: white;
     font-family: 'Slabo 27px', serif;
 }
 

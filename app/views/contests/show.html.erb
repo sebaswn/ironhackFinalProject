@@ -1,38 +1,206 @@
 <%= render "layouts/navbar" %>
-<p id="notice"><%= notice %></p>
 
-<%= image_tag @contest.cover.url %>
-<%= image_tag @contest.cover.url(:long) %>
+<% contest = @contest %>
 
-<p>
-  <strong>String:</strong>
-  <%= @contest.name %>
-</p>
+<div data-id="<%=contest.id%>" class="activeBanner">
+    <img data-id="<%=contest.id%>" src="<%=contest.cover.url(:long)%>">
+    
+      <div class="titleBanner"><h1><%=contest.name%></h1></div>
+      <div class="description"><h2><%=contest.description%></h1></div>
+      <div class="timeTill">
+        <% if contest.uploadBy <= Date.today && contest.voteBy > Date.today %>
+          <h2>Competition closes in <%= (contest.voteBy - Date.today).to_i %> days. </h2>ç
+        <%end%>
+        <% if contest.uploadBy < Date.today && contest.voteBy <= Date.today  && contest.endBy > Date.today %>
+          <h2>Competition ends in <%= (contest.endBy - Date.today).to_i %> days. </h2>
+        <%end%>
 
-<p>
-  <strong>String:</strong>
-  <%= @contest.description %>
-</p>
+      <% if contest.endBy <= Date.today%>
+         <% if((Date.today - contest.endBy).to_i == 0)%>
+          <% elsif ((Date.today - contest.endBy).to_i == 1) %>
+            Contest ended <%= (Date.today - contest.endBy).to_i %> day ago. 
+          <% else %>
+            Contest ended <%= (Date.today - contest.endBy).to_i %> days ago.
+        <%end%>
+      <%end%>
 
-<p>
-  <strong>Datetime:</strong>
-  <%= @contest.uploadBy %>
-</p>
+      </div>
+      <div class="links">
 
-<p>
-  <strong>Datetime:</strong>
-  <%= @contest.voteBy %>
-</p>
+      <% if contest.uploadBy < Date.today && contest.voteBy <= Date.today  && contest.endBy > Date.today %>
+       <% contest.votes.each do |vote| %>
+              <% if vote.user_id != current_user.id %>
+                <% @userVoted = false %>
+              <%else%>
+                <% @userVoted = true %>
+                <% break %>
+              <%end%>
+            <%end%>
+            
+            <% if @userVoted == false || contest.votes.size == 0 %>
+              <a href="<%=contest_vote_path(contest)%>"><button class="btn btn-success btnEnter" >Vote in Competition</button></a>
+            <%end%>
+      <%end%>
 
-<p>
-  <strong>Datetime:</strong>
-  <%= @contest.endBy %>
-</p>
+      <% if contest.uploadBy >= Date.today && contest.voteBy > Date.today %>
+        <% contest.users.each do |user| %>
+          <% if user.id != current_user.id %>
+            <% @userEntered = false %>
+          <%else%>
+            <% @userEntered = true %>
+            <% break %>
+          <%end%>
+        <%end%>
+        <% if @userEntered == false || contest.users.size == 0 %>
+        <a href="<%=contest_enter_path(contest)%>"><button class="btn btn-success btnEnter" >Enter Competition</button></a>
+        <%end%>
+      <%end%>
+
+      </div>
+  </div>
+
+</div> 
+
+
+
+
+
+
 <%= render partial: "layouts/gridLayout", locals: {posts: @contest.posts} %>
  <%= render "layouts/showModal" %>
 
 
+<script>
+
+  $(".activeBanner").children(".titleBanner").show();
+  $(".activeBanner").children(".links").show();
+  $(".activeBanner").children(".timeTill").show();
+  $(".activeBanner").children(".description").show();
+  $(".activeBanner").children('img').css("opacity","0.5");
+  $(".activeBanner").children('img').css("filter","alpha(opacity=50)");
 
 
-<%= link_to 'Edit', edit_contest_path(@contest) %> |
-<%= link_to 'Back', contests_path %>
+$(".link").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+$(".linkToUser").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+
+
+</script>
+
+
+<style>
+.jumbotron{
+  background-color: black;
+  color: white;
+}
+.linkOptions{
+  color: white;
+  padding-left: 7px;
+
+}
+.btnEnter{
+    width: 17%;
+    background-color: rgba(92,184,92,0.5);
+    color: white;
+  }
+  body{
+    text-align: center;
+  }
+
+.btnSee{
+
+    width: 17%;
+  background-color: rgba(51,122,183,0.5);
+  color: white;
+}
+.btnEdit{
+  width: 17%;
+ background-color:  rgba(239,172,77,0.5);
+}
+
+.activeBanner {
+    background-color: black;
+    position:relative; 
+  
+}
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+ h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+ body{
+  background-color: #EDEDED;
+ }
+
+.titleBanner {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 15%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.timeTill {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 50%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.description {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 30%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+
+.links {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 70%; 
+    bottom: 0; 
+    background: red; 
+    color: white;
+    font-family: 'Slabo 27px', serif;
+}
+
+
+#container {
+  width: 1200px;
+  margin: 0 auto;
+  padding-left: 0px;
+}
+
+</style>
+
+

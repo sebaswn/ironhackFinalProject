@@ -19,25 +19,25 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Picturesque</a>
+						<a class="navbar-brand" href="/">Picturesque</a>
 					</div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li class=""><a href="/">See All Posts</a></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filter <span class="caret"></span></a>
 								<ul class="dropdown-menu">
+									<li><a href="/posts/show/random">Recent</a></li>
+									<li role="separator" class="divider"></li>
+
 									<li><a href="/posts/show/popular">Popular</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="/posts/show/random">Random</a></li>
+									<li role="separator" class="divider"></li>
 									<li><a href="/posts/show/location">Location</a></li>
-									<li><a href="/posts/show/random">Random Order</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">One more separated link</a></li>
 								</ul>
 							</li>
-							<li><a href="/contests">Enter a Contest</a></li>
+							<li><a href="/contests">Contests</a></li>
 						</ul>
 						
 						<ul class="nav navbar-nav navbar-right">
@@ -47,7 +47,6 @@
 								<ul class="dropdown-menu">
 									<li><a href="/users/<%=current_user.id%>">Show Profile</a></li>
 									<li><a href="/users/edit">Edit Profile</a></li>
-									<li><a href="#">Something else here</a></li>
 									<li role="separator" class="divider"></li>
 									<li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
 								</ul>

@@ -13,7 +13,7 @@
   <% end %>
   <div class="field">
     <%= f.label :image %><br />
-    <%= f.file_field :image %>
+    <%= f.file_field :image, :class => "imagesUpload" %>
   </div>
   <div class="field">
     <%= f.label :name %><br>
@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= f.label :description %><br>
-    <%= f.text_field :description %>
+    <%= f.text_area :description, :class => 'descriptionBox' %>
   </div>
   <div class="field">
     <%= f.label :location %><br>
@@ -43,3 +43,17 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+
+
+
+
+<style>
+.imagesUpload{
+    position: relative;
+    left: 110px;
+  }
+
+
+
+</style>

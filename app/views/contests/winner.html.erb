@@ -1,3 +1,447 @@
+<%= render "layouts/navbar" %>
 
+
+<% contest = @contest %>
+
+<div data-id="<%=contest.id%>" class="activeBanner">
+    <img data-id="<%=contest.id%>" src="<%=contest.cover.url(:long)%>">
+    
+      <div class="titleBanner"><h1><%=contest.name%></h1></div>
+      <div class="description"><h2><%=contest.description%></h1></div>
+      <div class="timeTill">
+        <% if contest.uploadBy >= Date.today && contest.voteBy > Date.today %>
+          <h2>You have <%= (contest.voteBy - Date.today).to_i %> days to enter. </h2>
+        <%end%>
+        <% if contest.uploadBy < Date.today && contest.voteBy <= Date.today  && contest.endBy > Date.today %>
+          <h2>You have <%= (contest.endBy - Date.today).to_i %> days to Vote. </h2>
+        <%end%>
+
+      <% if contest.endBy <= Date.today%>
+         <% if((Date.today - contest.endBy).to_i == 0)%>
+          <% elsif ((Date.today - contest.endBy).to_i == 1) %>
+            Contest ended <%= (Date.today - contest.endBy).to_i %> day ago. 
+          <% else %>
+            Contest ended <%= (Date.today - contest.endBy).to_i %> days ago.
+        <%end%>
+      <%end%>
+
+      </div>
+  
+  </div>
+<strong><h1>Winner:</h1></strong>
 
 	<%=@winner.name%>
+
+<div id="myContent"> 
+    <div data-id="<%=@winner.id%>" class="active">
+      <img data-id="<%=@winner.id%>" data-usr="<%=@winner.user_id%>" src="<%=@winner.image.url(:original) %>">
+      
+        <div class="title"><h3><%=@winner.name%></h3>
+        </div>
+        <div class="photographer">
+          <h6>by:</h6>
+          <a class="linkToUser" href="/users/<%=@winner.user_id%>"><h4><%=User.where(id: @winner.user_id)[0].username%></h4></a>
+        </div>
+        <div class="likeDiv">
+          <% @winner.likes.each do |like|%>
+              <%if like.user_id != current_user.id %>
+                <% @userliked = false %>
+              <%else%>
+                <% @userliked = true %>
+                <% break %>
+              <%end%>
+            <%end%>
+            <%if @userliked == false || @winner.likes.size == 0 %>
+                <button class="buttonOptions likePic unlikedpic" data-userid="<%=current_user.id%>" data-postid="<%=@winner.id%>" ><b><span class='glyphicon glyphicon-heart' style="white !important" aria-hidden='true'></span><span class="layoutLike"></span></b></button>
+            <%end%>
+            <%if @userliked == true%>
+                <button class="buttonOptions likePic likedpic"  data-userid="<%=current_user.id%>" data-postid="<%=@winner.id%>" ><b><span class='glyphicon glyphicon-heart' aria-hidden='true'></span><span class="layoutLike"></span></b></button>
+            <%end%>
+        </div>
+               
+        <div class="links">
+          <% if current_user.id === @winner.user_id %>
+             <a class="linkOptions" href="/posts/<%=@winner.id%>/edit">Edit</a>
+          <% end %>
+            <a class="linkOptions showPic" data-userid="<%=@winner.user_id%>" data-post="<%=@winner.id%>" data-toggle="modal" data-target="#myModal" href="#">Show</a>
+          <% if current_user.id === @winner.user_id %>
+             <a class="linkOptions" data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/posts/<%=@winner.id%>">Delete</a>
+          <% end %>
+        </div>
+    </div>
+
+  </div> 
+
+
+
+
+
+ <%= render "layouts/showModal" %>
+
+<script>
+
+  $(".title").hide();
+  $(".photographer").hide();
+  $(".links").hide();
+  $(".likeDiv").hide();
+
+
+
+  $(".linkOptions").css("color", "white");
+  $(".buttonOptions").css("color", "white");
+
+  $(".linkToUser").css("color", "white");
+
+$("body").on("click", ".unlikedpic",  function() {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "/posts/likes/create",
+        data: {
+            post_id: $(this).data("postid"),
+            user_id: $(this).data("userid")
+        },
+        success: function() {
+        }
+    });
+
+    $(this).toggleClass("unlikedpic likedpic")
+  
+});
+
+
+
+$(".active").mouseover(function(){
+  console.log("hello");
+  
+  $.ajax({
+     url: "/post/" +$(this).children("img").data("id")+ "/likes",
+     success: function(data) {
+      $(".layoutLike").text(data.length);
+      show = true
+       }
+ });
+  
+  $(this).children(".likeDiv").show();
+  
+  $(this).children(".title").show();
+  $(this).children(".photographer").show();
+  $(this).children(".links").show();
+  
+  $(this).children('img').css("opacity","0.5");
+  $(this).children('img').css("filter","alpha(opacity=50)");
+});
+
+$(".unlikedpic").mouseover(function(){
+  $(this).css("background-color", "#DE4040");
+})
+
+$(".unlikedpic").mouseout(function(){
+  $(this).css("background-color", "rgba(222,64,64,0.5)");
+})
+
+$(".linkOptions").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+$(".linkToUser").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+$(".active").mouseout(function(){
+  $(this).children('img').css("opacity","1");
+  $(".title").hide();
+  $(".likeDiv").hide();
+  $(".photographer").hide();
+  $(".links").hide();
+  $(this).children('img').css("filter","alpha(opacity=100)");
+});
+
+
+
+
+
+
+  $(".activeBanner").children(".titleBanner").show();
+  $(".activeBanner").children(".links").show();
+  $(".activeBanner").children(".timeTill").show();
+  $(".activeBanner").children(".description").show();
+  $(".activeBanner").children('img').css("opacity","0.5");
+  $(".activeBanner").children('img').css("filter","alpha(opacity=50)");
+
+
+$(".link").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+$(".linkToUser").hover(function(){
+  $(this).css("background-color", "transparent");
+  $(this).css("color", "white");
+});
+
+
+
+</script>
+
+
+<style>
+
+.unlikedpic{
+    background-color: rgba(222,64,64,0.5);
+}
+
+.likedpic{
+    background-color: #DE4040 !important;
+
+}
+
+.layoutLike{
+  color: white;
+  position: relative;
+  
+
+}
+button:focus {outline:0;}
+
+.likeDiv{
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px;  
+    top: 60%; 
+    left: 50px;
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+
+.buttonOptions{
+  border: 1px transparent solid;
+  border-radius: 3px;
+  text-align: center;
+  color: white;
+  width: 50px;
+  position: relative;
+  right: 50px;
+  text-decoration: none;
+
+
+}
+body{
+  background-color: #EDEDED;
+}
+.modal-title{
+  text-align: center;
+}
+
+
+.linkOptions{
+  color: white;
+  padding-left: 0px;
+}
+
+.seeMore{
+    width: 60px;
+    background-color: rgba(92,184,92,0.5);
+    color: white;
+  }
+.edit{
+    width: 60px;
+    background-color: rgba(240, 173, 78, 0.5);
+    color: white;
+  }
+  .delete{
+    width: 60px;
+    background-color: rgba(201, 48, 44, 0.5);
+    color: white;
+  }
+
+.active {
+    background-color: black;
+    position:relative; 
+  
+}
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+ h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.title {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 10%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.photographer {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 30%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.links {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top:80%; 
+    bottom: 0; 
+    background: red; 
+    color: white;
+    font-family: 'Slabo 27px', serif;
+}
+
+
+#container {
+  width: 1200px;
+  margin: 0 auto;
+  padding-left: 0px;
+}
+
+  #myContent {
+    -moz-column-count: 6;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 1;
+    -webkit-column-gap: 0px;
+    column-count: 6;
+    column-gap: 0px;
+    width: 70%%;
+  }
+
+
+
+
+#myContent img{
+  display: inline-block;
+  margin-bottom: 0px;
+  width: 60%;
+}
+
+.jumbotron{
+  background-color: black;
+  color: white;
+}
+.linkOptions{
+  color: white;
+  padding-left: 7px;
+
+}
+.btnEnter{
+    width: 17%;
+    background-color: rgba(92,184,92,0.5);
+    color: white;
+  }
+  body{
+    text-align: center;
+  }
+
+.btnSee{
+
+    width: 17%;
+  background-color: rgba(51,122,183,0.5);
+  color: white;
+}
+.btnEdit{
+  width: 17%;
+ background-color:  rgba(239,172,77,0.5);
+}
+
+.activeBanner {
+    background-color: black;
+    position:relative; 
+  
+}
+h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+ h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+ body{
+  background-color: #EDEDED;
+ }
+
+.titleBanner {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 15%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.timeTill {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 50%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+.description {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 30%; 
+    bottom: 0; 
+    background: red; 
+    color:white;
+    font-family: 'Slabo 27px', serif;
+}
+
+.links {
+    position: absolute; 
+    width: 100%;
+    text-align: center;
+    height: 0px; 
+    right: 0; 
+    top: 70%; 
+    bottom: 0; 
+    background: red; 
+    color: white;
+    font-family: 'Slabo 27px', serif;
+}
+
+
+#container {
+  width: 1200px;
+  margin: 0 auto;
+  padding-left: 0px;
+}
+
+</style>
