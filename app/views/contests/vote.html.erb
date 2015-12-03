@@ -96,31 +96,32 @@ function fetchRandom() {
                     step = step + 1;
                     if (step > steps){
                         $(".step").empty();
+                      $("#myContent").empty()
+                        
                         $(".step").append("<h3>Thank You for voting. <br> Come back at the end of the competition to see the winner.</h3>");
                     }else{
                         $(".step").empty();
                         $(".step").append("<h3>Step "+step+" of "+ steps+"</h3>");
 
-                    }
-                    console.log("asdf")
-                    $("#myContent").empty()
-                    x = i + 5
-                    console.log(i)
-                    while (i < x) {
-                        $("#myContent").prepend(
-                            '<div data-contestid="<%=@contest.id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
-                            data[i].id +
-                            '" data-usr="' +
-                            data[i].user_id +
-                            '" src=/images/original/' +
-                            data[i].image_file_name +
-                            '><div class="title"><h3>' +
-                            data[i].name
-                        )
-                        i++;
-                        $(".title").hide();
-                        $(".photographer").hide();
-                        $(".links").hide();
+                      $("#myContent").empty()
+                      x = i + 5
+                      console.log(i)
+                      while (i < x) {
+                          $("#myContent").prepend(
+                              '<div data-contestid="<%=@contest.id%>" data-userid="<%=current_user.id%>" data-postid="' +data[i].id + '" class="active"><img data-id="' +
+                              data[i].id +
+                              '" data-usr="' +
+                              data[i].user_id +
+                              '" src=/images/original/' +
+                              data[i].image_file_name +
+                              '><div class="title"><h3>' +
+                              data[i].name
+                          )
+                          i++;
+                          $(".title").hide();
+                          $(".photographer").hide();
+                          $(".links").hide();
+                      }
                     }
                 }
             });

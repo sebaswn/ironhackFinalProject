@@ -14,7 +14,7 @@
 	puts("----------------------------------------------------------------")
 
 
-4.times do |i|
+5.times do |i|
 	User.create(email: Faker::Internet.email, 
 					password: "password",
 					username: Faker::Internet.user_name,
@@ -29,15 +29,10 @@ User.create(email: "sebas@fishtank.h20",
 	puts("Created Admin User")
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
-1.times do |i|
-	User.create(email: Faker::Internet.email, 
-					password: "password",
-					username: Faker::Internet.user_name)
-	puts("User# #{i}")
-end
 
 
-45.times do |i|
+
+61.times do |i|
 	
 	Post.create( name: Faker::Team.name, 
 					location: Faker::Address.city, 
@@ -68,28 +63,18 @@ end
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
 
-Contest.create(name: "MicroPhotography",
-					description: "For macrophotography pictures. The smaller, the beter.",
+Contest.create(name: "Monthly Contest",
+					description: "A monthly Contest for Any Type of Picture",
 					uploadBy: Date.yesterday,
 					voteBy: Date.new(2015, 12, 7),
 					endBy: Date.new(2015, 12, 8),
-					cover: File.new("#{Rails.root}/app/assets/images/covers/grasshopper.jpg")
+					cover: File.new("#{Rails.root}/app/assets/images/covers/monthly.jpg")
 				)
 
-	puts("Created MicroPhotography Contest")
+	puts("Created Monthly Contest")
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
-
-Contest.create(name: "Flowers",
-					description: "Flowers of all shapes colers and sizes.",
-					uploadBy: Date.new(2015, 11, 30),
-					voteBy: Date.new(2015, 11, 30),
-					endBy: Date.new(2015, 12, 5),
-					cover: File.new("#{Rails.root}/app/assets/images/covers/flower.jpg")
-				)
-
-	puts("Created Flowers Contest")
-num = 0
+num = 0;
 Post.all.each do |x|
 		post_id = x.id
 		post_to_look_for = Post.where(id: post_id)[0]
@@ -97,13 +82,39 @@ Post.all.each do |x|
 		Contest.last.posts<<(Post.where(id: post_id))
 		Contest.last.users<<(user_to_look_for)
 		num = num +1
-		if num == 45
-			break
+		if (num == 17)
+			break;
 		end
-	puts("Entered post# #{num} into Flowers Contest")
+		puts("Entered post# #{num} into Montly Contest")
+
+end
+
+puts("----------------------------------------------------------------")
+puts("----------------------------------------------------------------")
+
+micros=["2","3","4","8","10","12","22","26","39","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60"]
+Contest.create(name: "MicroPhotography",
+					description: "For macrophotography Pictures. The smaller, the better.",
+					uploadBy: Date.new(2015, 11, 30),
+					voteBy: Date.new(2015, 11, 30),
+					endBy: Date.new(2015, 12, 5),
+					cover: File.new("#{Rails.root}/app/assets/images/covers/grasshopper.jpg")
+				)
+
+	puts("Created MicroPhotography Contest")
+num = 0
+micros.each do |x|
+		post_id = x
+		post_to_look_for = Post.where(id: post_id)[0]
+		user_to_look_for = User.where(id: post_to_look_for.user_id)[0]
+		Contest.last.posts<<(Post.where(id: post_id))
+		Contest.last.users<<(user_to_look_for)
+		num = num +1
+		
+	puts("Entered post# #{num} into MicroPhotography Contest")
 	
 	rand(1..30).times do |w|
-		Vote.create(post_id: x.id,
+		Vote.create(post_id: x,
 							contest_id: Contest.last.id,
 							user_id: rand(User.first.id..User.last.id))
 		puts("Vote# #{w} times on post# #{num} in Flowers Contest")	
@@ -113,30 +124,31 @@ end
 
 	puts("----------------------------------------------------------------")
 	puts("----------------------------------------------------------------")
-Contest.create(name: "Abstract",
-					description: "Abstract images.",
+Contest.create(name: "Flowers",
+					description: "Everybody Loves Flowes.",
 					uploadBy: Date.new(2015, 11, 30),
 					voteBy: Date.new(2015, 11, 30),
 					endBy: Date.new(2015, 12, 3),
-					cover: File.new("#{Rails.root}/app/assets/images/covers/slices.jpg")
+					cover: File.new("#{Rails.root}/app/assets/images/covers/waterFlower.jpg")
 				)
 
-	puts("Created Abstract Contest")
+	puts("Created Flowers Contest")
 num = 0
+pic = 60
 Post.all.each do |x|
-		post_id = x.id
+		post_id = pic
 		post_to_look_for = Post.where(id: post_id)[0]
 		user_to_look_for = User.where(id: post_to_look_for.user_id)[0]
 		Contest.last.posts<<(Post.where(id: post_id))
 		Contest.last.users<<(user_to_look_for)
 		num = num +1
-		if num == 17
+		if num == 1
 			break
 		end
 	puts("Entered post# #{num} into Abstract Contest")
 
 		rand(1..30).times do |w|
-			Vote.create(post_id: x.id,
+			Vote.create(post_id: pic,
 								contest_id: Contest.last.id,
 								user_id: rand(User.first.id..User.last.id))
 			puts("Vote# #{w} times on post# #{num} in Abstract Contest")	

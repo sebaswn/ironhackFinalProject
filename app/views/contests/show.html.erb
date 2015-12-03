@@ -9,7 +9,7 @@
       <div class="description"><h2><%=contest.description%></h1></div>
       <div class="timeTill">
         <% if contest.uploadBy <= Date.today && contest.voteBy > Date.today %>
-          <h2>Competition closes in <%= (contest.voteBy - Date.today).to_i %> days. </h2>ç
+          <h2>Competition closes in <%= (contest.voteBy - Date.today).to_i %> days. </h2>
         <%end%>
         <% if contest.uploadBy < Date.today && contest.voteBy <= Date.today  && contest.endBy > Date.today %>
           <h2>Competition ends in <%= (contest.endBy - Date.today).to_i %> days. </h2>

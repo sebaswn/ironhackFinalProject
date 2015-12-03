@@ -1,26 +1,82 @@
-<h2>Log in</h2>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+<div class="row">
+  <div class="col-md-12 info">
+    <h1>Log in</h1>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <% if devise_mapping.rememberable? -%>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true %>
     </div>
-  <% end -%>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <% if devise_mapping.rememberable? -%>
+      <div class="field remember">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
+      </div>
+    <% end -%>
+
+    <div class="actions">
+      <%= f.submit "Log in", :class => 'btn btn-success btnLogIn' %>
+    </div>
+    <% end %>
   </div>
-<% end %>
+</div>
 
-<%= render "devise/shared/links" %>
+
+
+
+<style>
+.info{
+  background-color: rgba(0,0,0,0.3);
+  text-align: center;
+  height: 100vh;
+
+}
+#user_avatar{
+  position: relative;
+  left: 550px;
+}
+
+  h1{
+    font-size: 50px;
+  }
+
+  label{
+    font-size: 25px;
+  }
+
+.remember{
+  font-size: 25px;
+}
+  input[type=text], input[type=email], input[type=password]{
+    width: 300px;
+    color: black;
+    text-align: center;
+    height: 25px;
+    background-color:rgba(255,255,255,0.8);
+    border: 1px solid grey;
+    border-radius: 5px;
+  }
+  .btnLogIn{
+    width: 15%;
+    background-color: rgba(92,184,92,0.5);
+    color: white;
+  }
+  body{
+    text-align: center;
+    color: white;
+    background-image: url("/assets/cats4.jpg");
+    background-size: 100%;
+    font-family: 'Slabo 27px', serif;
+    background-repeat: no-repeat;
+   
+  }
+
+</style>

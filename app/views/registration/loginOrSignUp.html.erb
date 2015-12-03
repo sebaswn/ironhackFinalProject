@@ -21,66 +21,45 @@
 </div>
 
 <div class="expl">
-	<h1 class="headerText"> Share your Pictures with other Photographers and grow your network</h1>
+	<h1 class="headerText"> Share your Pictures with other Photographers and grow your network with Likes, Comments, and More</h1>
 </div>
 <br>
 <br>
+<div class="scrollExample"></div>
+
+<div class="expl">
+	<h1 class="headerText"> Enter your Photos into themed Competitions with three steps; 
+		<br> Enter Your Photo
+		<br> Vote Your Favorite Photos 
+		<br> See the Winner of the Competition 
+	</h1>
+</div>
+<br>
+<br>
+<div class="scrollFlower"></div>
+
+<div class="expl">
 <br>
 <br>
 <br>
+	<h1 class="headerText"> Create Your Personal Online Photography Portfolio
+	</h1>
 <br>
 <br>
 <br>
+</div>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="scrollHats"></div>
+
 
 </body>
 </html>
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="/assets/parallax.min.js"></script>
+		<script src="/assets/parallax.js"></script>
 
 
 <style>
@@ -136,13 +115,31 @@
 		color: white;
 		padding-top: 15%;
 	}
+	.scrollFlower{
+		height: 500px;
+	}
+	.scrollExample{
+		height: 500px;
+	}
+	.scrollHats{
+		height: 500px;
+	}
+
+.btnLogMore:focus {outline:0;}
+
 
 </style>
 
 <script>
+
+$('.scrollExample').parallax({imageSrc: '/assets/example.jpg'});
+$('.scrollFlower').parallax({imageSrc: '/assets/waterFlower.jpg'});
+$('.scrollHats').parallax({imageSrc: '/assets/hats.jpg'});
+
+
 $('.btnLogMore').click(function(){
 	
-    $('html, body').animate({scrollTop:565}, 'slow');
+    $('html, body').animate({scrollTop:700}, 'slow');
 });
 
 $('.btnLogMore').hover(function(){

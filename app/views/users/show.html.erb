@@ -1,12 +1,26 @@
 <%= render "layouts/navbar" %>
-Hello, <%=@user[0].email%>
 
-<h1> <%=@user[0].username%>'s Posts</h1>
-
-<%= image_tag @user[0].avatar.url(:thumb) %>
-
+<div class="userHeader">
+	<%= image_tag @user[0].avatar.url %>
+	<h1> <%=@user[0].username%>'s Posts</h1>
+</div>
 
 <%= render partial: "layouts/gridLayout", locals: {posts: @posts} %>
  <%= render "layouts/showModal" %>
 
 
+
+
+
+
+<style>
+.userHeader{
+	text-align: center;
+}
+.jumbotron{
+	background-color: rgba(0,0,0,0.05);
+	padding-bottom: 0px;
+}
+
+
+</style>

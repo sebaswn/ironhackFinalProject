@@ -1,9 +1,11 @@
 
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 <div class='row'>
 
   <div class="col-md-12 info">
+  
   <h1>Edit <%= resource_name.to_s.humanize %></h1>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <div class="field">
@@ -41,11 +43,11 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" %>
+    <%= f.submit "Update", :class => 'btn btn-warning btnEdit'%>
   </div>
 <% end %>
 
-<%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+<%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :class => 'btn btn-danger btnDelete'%></p>
 </div>
 </div>
 
@@ -58,10 +60,11 @@
   text-align: center;
   height: 100vh;
 
+
 }
 #user_avatar{
   position: relative;
-  left: 40px;
+  left: 550px;
 }
 
   h1{
@@ -71,21 +74,24 @@
   label{
     font-size: 25px;
   }
-body{
-  padding: 0px;
-}
+
   input[type=text], input[type=email], input[type=password]{
     width: 300px;
-
+    color:black;
     text-align: center;
     height: 25px;
     background-color:rgba(255,255,255,0.8);
     border: 1px solid grey;
     border-radius: 5px;
   }
-  .btnSignUp{
+  .btnEdit{
     width: 15%;
-    background-color: rgba(51,122,183,0.5);
+    background-color: rgba(236,151,31,0.5);
+    color: white;
+  }
+  .btnDelete{
+    width: 15%;
+    background-color: rgba(201,48,44,0.5);
     color: white;
   }
   body{
