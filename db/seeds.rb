@@ -97,7 +97,7 @@ Contest.create(name: "MicroPhotography",
 					description: "For macrophotography Pictures. The smaller, the better.",
 					uploadBy: Date.new(2015, 11, 30),
 					voteBy: Date.new(2015, 11, 30),
-					endBy: Date.new(2015, 12, 5),
+					endBy: Date.new(2015, 12, 6),
 					cover: File.new("#{Rails.root}/app/assets/images/covers/grasshopper.jpg")
 				)
 
@@ -128,7 +128,7 @@ Contest.create(name: "Flowers",
 					description: "Everybody Loves Flowes.",
 					uploadBy: Date.new(2015, 11, 30),
 					voteBy: Date.new(2015, 11, 30),
-					endBy: Date.new(2015, 12, 3),
+					endBy: Date.new(2015, 12, 4),
 					cover: File.new("#{Rails.root}/app/assets/images/covers/waterFlower.jpg")
 				)
 
